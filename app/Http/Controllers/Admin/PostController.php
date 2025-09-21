@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,48 +16,42 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
-        return response()->json($posts);
+        $posts = Post::with(['category', 'tags', 'user'])->latest()->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StorePostRequest $request)
     {
-        $vailidated = $request->safe()->all();
-        $post = Post::create($vailidated);
-        return response()->json($post, 201);
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+        $data['slug'] = Str::slug($data['title']);
+        $post = Post::create($data);
+
+        $post = Post::create($data);
+
+        if ($request->has('tags')) {
+            $post->tags()->sync($data['tags']);
+        }
+
+        return redirect()->route('posts.index')->with('success', 'Tạo bài viết thành công.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::findOrFail($id);
-        return response()->json(($post));
+        return new PostResource($post->load(['category', 'tags', 'user', 'comments']));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit()
+    public function edit(Post $post)
     {
-        //
+        return new PostResource($post->load(['category', 'tags', 'user']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(StorePostRequest $request, $id)
     {
         $post = Post::findOrFail($id);
@@ -63,13 +59,9 @@ class PostController extends Controller
         return response()->json($post);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        $post = Post::findOrFail($id);
         $post->delete();
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Xóa bài viết thành công.']);
     }
 }
