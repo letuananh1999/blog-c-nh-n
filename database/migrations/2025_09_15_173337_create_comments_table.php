@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete(); // comment thuộc post nào
-            //$table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete(); // nếu có hệ thống user
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete(); // nếu có hệ thống user
             $table->string('author_name');
             $table->string('author_email');
-            $table->text('content'); // nội dung comment
+            $table->text('content'); // nội dung
             $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnDelete(); // comment cha (nếu có)
             $table->timestamps();
         });

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeControllers::class, 'index'])->name('home');
 Route::get('/post/{slug}', [HomeControllers::class, 'show'])->name('post.show');
+Route::post('/post/{slug}/comment', [CommentController::class, 'store']);
 
 //group dành cho admin
 Route::prefix('admin')
