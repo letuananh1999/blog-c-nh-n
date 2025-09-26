@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\web;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -12,10 +12,6 @@ class HomeControllers extends Controller
     // $cats = SubCategory::all()->select('name', 'id_main_category');
     $cats = Category::orderBy('id', 'asc')->paginate(5);
     // dd($cats);
-    return view('home', compact('cats'));
-  }
-  public function about()
-  {
-    return view('web.about');
+    return view('admin.index', compact('cats'));
   }
 }

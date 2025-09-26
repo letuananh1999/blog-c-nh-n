@@ -26,10 +26,11 @@ class PostResource extends JsonResource
             'views'       => $this->views_count,
             'likes'       => $this->likes_count,
 
-            // Quan hệ
-            // 'category'    => new CategoryResource($this->whenLoaded('category')),
-            // 'tags'        => TagResource::collection($this->whenLoaded('tags')),
-            // 'author'      => new UserResource($this->whenLoaded('user')),
+            // Quan hệ   Đây là cách tối ưu API, tránh N+1 query problem.
+            //CategoryResource → format thông tin danh mục.
+            'category'    => new CategoryResource($this->whenLoaded('category')),
+            'tags'        => TagResource::collection($this->whenLoaded('tags')),
+            'author'      => new UserResource($this->whenLoaded('user')),
         ];
     }
 }
