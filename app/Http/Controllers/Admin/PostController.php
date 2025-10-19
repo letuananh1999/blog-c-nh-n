@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Post;
 use App\Http\Controllers\Controller;
@@ -21,14 +21,14 @@ class PostController extends Controller
     {
         $posts = Post::with(['category', 'tags', 'user'])->latest()->paginate(10);
         // return PostResource::collection($posts); // nếu là API
-        return view('posts.index', compact('posts'));
+        return view('admin.post.index', compact('posts'));
     }
 
     public function create()
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('posts.create', compact('categories', 'tags'));
+        return view('admin.post.create', compact('categories', 'tags'));
     }
 
     public function store(StorePostRequest $request)
@@ -37,7 +37,7 @@ class PostController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'category_id' => $request->category_id,
-            'user_id' => Auth()->id(),
+            'user_id' => Auth()->id = 1,
             'slug' => Str::slug($request->title),
             'is_published' => $request->has('is_published'),
         ]);

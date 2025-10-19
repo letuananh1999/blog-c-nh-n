@@ -4,7 +4,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CommentController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\HomeControllers;
 use Illuminate\Support\Facades\Route;
 

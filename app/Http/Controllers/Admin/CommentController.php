@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index() {}
+    public function index()
+    {
+        // Hiển thị danh sách bình luận
+        return view('admin.comment.index');
+    }
 
     public function create()
     {
