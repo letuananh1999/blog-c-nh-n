@@ -1,3 +1,6 @@
+// Class active được quản lý bởi server-side routing (Laravel Route::is())
+// Không cần xử lý bằng JavaScript nữa
+/*
 const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
 allSideMenu.forEach(item=> {
@@ -10,6 +13,7 @@ allSideMenu.forEach(item=> {
 		li.classList.add('active');
 	})
 });
+*/
 
 
 
