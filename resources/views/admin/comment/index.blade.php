@@ -3,8 +3,8 @@
 @section('content')
 <div class="container">
 							<section class="comments-wrap">
-								<div class="head-row">
-									<div class="">
+								<div class="head-row head-title">
+									<div class="left">
 										<h1 class="cat-title">Bình luận</h1>
 										<p class="subtitle">Quản lý bình luận — duyệt, trả lời hoặc ẩn những bình luận không phù hợp.</p>
 									</div>
