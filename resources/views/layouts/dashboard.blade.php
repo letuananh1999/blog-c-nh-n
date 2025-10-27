@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="{{asset('css/style.css')}}">
   <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
   <link rel="stylesheet" href="{{ asset('css/dashboard-main.css') }}">
+  {{-- thêm styles riêng cho từng trang --}}
+  @stack('styles')
   
   <title>@yield('title')</title>
 </head>
@@ -22,7 +24,9 @@
         @yield('content')
     </main>
   </section>
-
+  
   <script src="{{ asset('js/style.js') }}"></script>
+  {{-- thêm scripts riêng cho từng trang --}}
+  @stack('scripts')
 </body>
 </html>

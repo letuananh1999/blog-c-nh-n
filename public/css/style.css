@@ -1,8 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Poppins:wght@400;500;600;700&display=swap');
-@import url('/css/category.css');
-@import url('/css/posts.css');
-@import url('/css/comment.css');
-@import url('/css/user.css');
 * {
 	margin: 0;
 	padding: 0;

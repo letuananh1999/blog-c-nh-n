@@ -1,5 +1,8 @@
 @extends('layouts.dashboard')
 @section('title', 'Users')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/user/index.css') }}">
+@endpush
 @section('content')
 <div class="container">
     <section class="users-wrap">
@@ -13,7 +16,9 @@
             <div class="controls">
                   <div class="control-search"><i class='bx bx-search'></i><input placeholder="Tìm theo tên hoặc email"/></div>
                   <select class="filter-select"><option>All</option><option>Active</option><option>Blocked</option></select>
-                  <button class="btn">Thêm người dùng</button>
+                  <a href="{{ route('admin.users.create') }}">
+                    <button class="btn">Thêm người dùng</button>
+                  </a>
             </div>
         </div>
 

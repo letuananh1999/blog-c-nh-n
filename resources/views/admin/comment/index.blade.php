@@ -1,5 +1,8 @@
 @extends('layouts.dashboard')
 @section('title', 'Comments')
+@push('styles')
+		<link rel="stylesheet" href="{{ asset('css/comment/index.css') }}">	
+@endpush
 @section('content')
 <div class="container">
 							<section class="comments-wrap">

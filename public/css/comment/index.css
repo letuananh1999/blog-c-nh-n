@@ -10,11 +10,7 @@
 }
 
 /* page layout */
-.comments-wrap{
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-}
+.comments-wrap{display:flex;flex-direction:column;gap:18px}
 .head-row{
   display:flex;
   justify-content:space-between;
@@ -61,6 +57,16 @@
 }
 .btn-group .btn{
   margin-left:6px
+}
+
+.btn {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #04202a;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
 /* stats */
@@ -160,7 +166,19 @@
   border-bottom:1px solid var(--border);
   text-align:left;
 }
+.table-card {
+  width: 100%;
+  background: var(--bg);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 12px;
+}
 
+.foot {
+	text-align: center;
+	margin: 28px 0;
+	color: var(--muted);
+}
 
 
 /* ===== RESPONSIVE ===== */
