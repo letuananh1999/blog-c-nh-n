@@ -1,0 +1,232 @@
+/* form-add-user.css - styles for Add User form */
+:root{
+  --bg:#f7f9fb;
+  --card:#ffffff;
+  --accent:#3C91E6;
+  --accent2:#6dd5ed;
+  --muted:#6b7280;
+  --text:#04202a;
+  --border:rgba(2,6,23,0.06);
+  --radius:12px;
+}
+
+/* body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,Arial;
+} */
+.container-form
+{
+  max-width:min(100%,980px);
+  margin:24px auto;
+  padding:0 16px;
+}
+.form-card
+{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:0 12px 40px rgba(6,25,40,0.06);
+  border:1px solid var(--border);
+}
+.form-head
+{
+  display:flex;justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+.form-head h2
+{
+  margin:0;
+  font-size:20px;
+}
+.form-head p
+{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.form-grid{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:start}
+.fields-col{min-width:0}
+.form-group
+{display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+label
+{font-size:13px;
+  color:var(--muted)
+}
+
+input[type="text"],input[type="email"],input[type="password"],select,button
+{
+  font-family:inherit;
+}
+.input,select,textarea
+{
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:transparent
+}
+.input:focus,select:focus,textarea:focus
+{
+  outline:none;
+  box-shadow:0 8px 24px rgba(60,145,230,0.06);
+  border-color:rgba(60,145,230,0.18);
+}
+
+.password-row
+{display:flex;
+  align-items:center;
+  gap:8px;
+}
+.pw-toggle
+{
+  background:transparent;
+  border:0;
+  color:var(--muted);
+  cursor:pointer;
+}
+
+.form-actions
+{display:flex;
+  justify-content:flex-end;
+  gap:10px;margin-top:16px;
+}
+.btn
+{
+  padding:10px 14px;
+  border-radius:10px;
+  border:0;
+  cursor:pointer;
+}
+.btn.secondary
+{
+  background:transparent;
+  border:1px solid var(--border);
+  color:var(--text);
+}
+.btn.primary
+{
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#04202a;
+  font-weight:600;
+}
+
+/* Avatar / image input */
+.avatar-card
+{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  padding:10px;
+}
+.avatar-preview
+{
+  width:160px;
+  height:160px;
+  border-radius:999px;
+  background:linear-gradient(180deg,#fff,#f7f9fb);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px dashed var(--border);
+  overflow:hidden;
+  box-shadow:0 6px 20px rgba(6,25,40,0.04);
+}
+.avatar-preview img
+{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.avatar-placeholder
+{
+  color:var(--muted);
+  font-size:13px;
+  text-align:center;
+  padding:12px;
+}
+.file-input-label
+{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:10px;
+  background:transparent;
+  border:1px solid var(--border);
+  cursor:pointer;
+}
+.file-input
+{
+  display:none;
+}
+.avatar-actions
+{
+  display:flex;
+  gap:8px;
+}
+.avatar-actions .btn
+{
+  padding:8px 10px;
+  border-radius:8px;
+}
+
+/* Slight visual polish for fields */
+/* .form-card
+{
+  transition:transform .18s ease,box-shadow .18s ease
+} */
+/* .form-card:hover
+{
+  transform:translateY(-4px);
+  box-shadow:0 24px 60px rgba(6,25,40,0.08);
+} */
+
+/* Tablet breakpoint */
+@media (max-width: 1024px){
+  .container-form
+  {
+    max-width:840px;
+  }
+  .form-grid{grid-template-columns:200px 1fr}
+}
+
+/* Small tablets / large phones */
+@media (max-width: 900px){
+  .form-grid{grid-template-columns:160px 1fr}
+  .avatar-preview{width:140px;height:140px}
+}
+
+/* Mobile */
+@media (max-width: 640px){
+  #content main 
+  {
+    padding:0;
+  }
+  .form-grid
+  {
+    grid-template-columns:1fr;gap:14px
+  }
+  .avatar-preview
+  {
+    width:120px;height:120px
+  }
+  .form-actions
+  {
+    bottom:0;background:var(--card);padding-top:12px;margin-top:20px;
+    background:var(--card);
+    padding-top:12px;
+    margin-top:20px;
+  }
+  .btn
+  {
+    width:100%
+  }
+}

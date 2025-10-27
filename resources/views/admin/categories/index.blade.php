@@ -1,5 +1,8 @@
 @extends('layouts.dashboard')
 @section('title', 'Categories')
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('css/category/index.css') }}">
+@endpush
 @section('content')
   {{-- @foreach ($categories as $categorie)
       <tr>
