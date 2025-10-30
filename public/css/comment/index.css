@@ -7,20 +7,35 @@
   --accent2:#6dd5ed;
   --glass: rgba(2,6,23,0.03);
   --border: #eef2f6;
+  --text: #0f1724;
 }
 
 /* page layout */
-.comments-wrap{display:flex;flex-direction:column;gap:18px}
+.comments-wrap{display:flex;
+  flex-direction:column;
+  gap:18px
+}
 .head-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px
+  gap:12px;
 }
 .title{
   margin:0;
   font-size:36px
 }
+.form-blog-header {
+  margin-bottom: 24px;
+}
+
+.form-blog-header h1 {
+  margin: 0 0 6px 0;
+  font-size: 36px;
+  color: var(--text);
+}
+
+
 
 .subtitle{
   margin:0;

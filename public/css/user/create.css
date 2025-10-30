@@ -15,6 +15,23 @@
   color:var(--text);
   font-family:Inter,system-ui,Arial;
 } */
+
+
+.form-blog-header {
+  margin-bottom: 24px;
+}
+
+.form-blog-header h1 {
+  margin: 0 0 6px 0;
+  font-size: 24px;
+  color: var(--text);
+}
+
+.form-blog-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
 .container-form
 {
   max-width:min(100%,980px);

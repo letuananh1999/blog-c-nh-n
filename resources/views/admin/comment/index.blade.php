@@ -4,11 +4,11 @@
 		<link rel="stylesheet" href="{{ asset('css/comment/index.css') }}">	
 @endpush
 @section('content')
-<div class="container">
+						<div class="container">
 							<section class="comments-wrap">
-								<div class="head-row head-title">
-									<div class="left">
-										<h1 class="cat-title">Bình luận</h1>
+								<div class="head-row">
+									<div class="form-blog-header">
+										<h1 >Bình luận</h1>
 										<p class="subtitle">Quản lý bình luận — duyệt, trả lời hoặc ẩn những bình luận không phù hợp.</p>
 									</div>
 									<div class="controls">
@@ -44,7 +44,7 @@
 								</div>
 
 								<div class="comments-list">
-									<article class="comment-card">
+									<article class="comment-card" data-comment-id="1">
 										<div class="comment-avatar">A</div>
 										<div class="comment-body">
 											<div class="comment-meta"><strong>Anh An</strong>
@@ -62,7 +62,7 @@
 										</div>
 									</article>
 
-									<article class="comment-card">
+									<article class="comment-card" data-comment-id="2">
 										<div class="comment-avatar">B</div>
 										<div class="comment-body">
 											<div class="comment-meta"><strong>Bé Bình</strong>
@@ -113,14 +113,22 @@
                         <td>2025-08-21</td>
                         <td>Chờ</td>
                         <td>
-                          <button class="btn">Sửa</button>
+                          <button class="btn">Sửa hoặc xem</button>
                         </td>
                     </tr>
 										</tbody>
 									</table>
 								</div>
-
 							</section>
 							<footer class="foot">© 2025 AdminHub · Giao diện mẫu</footer>
+
+							<div id="modal-root"></div>
+							<div id="toast-root"></div>
 						</div>
+							
+
+						
 @endsection
+@push('scripts')
+		<script src="{{ asset('js/comment/comment.js') }}"></script>	
+@endpush
