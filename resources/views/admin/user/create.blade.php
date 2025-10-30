@@ -7,8 +7,8 @@
     	<div class="container-form">
 				<div class="form-card">
 					<div class="form-head">
-						<div>
-							<h2>Thêm người dùng mới</h2>
+						<div class="form-blog-header">
+							<h1><i class='bx bx-pen'></i> Thêm người dùng mới</h1>
 							<p>Điền đầy đủ thông tin người dùng sau đó nhấn Lưu để thêm vào hệ thống.</p>
 						</div>
 					</div>
