@@ -1,28 +1,31 @@
 <?php
 
-// use App\Http\Controllers\HomeControllers;
-
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CommentController;
-use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\HomeControllers;
-use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CommentController;
 
-
-Route::get('/', [HomeControllers::class, 'index'])->name('admin.index');
-// Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
-// Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
-// Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
-// Route::get('/categories/{id}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
-// Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
-// Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
-//group dành cho admin
 Route::prefix('admin')
-  ->as('admin.')
+  ->name('admin.')
   ->group(function () {
-    Route::resource('categories', CategoryController::class);
-    Route::resource('comments', CommentController::class);
-    Route::resource('posts', PostController::class);
-    Route::resource('users', UserController::class);
+
+    // 👉 Các route đăng nhập, đăng xuất (không cần đăng nhập mới vào được)
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('login');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+    // 👉 Các route chỉ cho admin sau khi đăng nhập + có quyền admin
+    Route::middleware(['auth', 'checkrole:admin'])
+      ->group(function () {
+        Route::get('/', function () {
+          return view('admin.dashboard');
+        })->name('dashboard');
+
+        Route::resource('categories', CategoryController::class);
+        Route::resource('posts', PostController::class);
+        Route::resource('users', UserController::class);
+        Route::resource('comments', CommentController::class);
+      });
   });
