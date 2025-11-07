@@ -29,7 +29,7 @@ class AuthController extends Controller
             'role' => 'admin' // chỉ cho admin đăng nhập vào trang này
         ])) {
             $request->session()->regenerate();
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.index');
         }
 
         return back()->withErrors([

@@ -62,7 +62,7 @@ body {
 
 
 /* SIDEBAR */
-#sidebar {
+/* #sidebar {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -167,7 +167,7 @@ body {
 	min-width: calc(60px  - ((4px + 6px) * 2));
 	display: flex;
 	justify-content: center;
-}
+} */
 /* SIDEBAR */
 
 
@@ -175,22 +175,13 @@ body {
 
 
 /* CONTENT */
-#content {
-	position: relative;
-	width: calc(100% - 280px);
-	left: 280px;
-	transition: .3s ease;
-}
-#sidebar.hide ~ #content {
-	width: calc(100% - 60px);
-	left: 60px;
-}
+
 
 
 
 
 /* NAVBAR */
-#content nav {
+/* #content nav {
 	height: 56px;
 	background: var(--light);
 	padding: 0 24px;
@@ -310,7 +301,7 @@ body {
 }
 #content nav #switch-mode:checked + .switch-mode::before {
 	left: calc(100% - (25px - 4px) - 2px);
-}
+} */
 /* NAVBAR */
 
 
@@ -318,7 +309,7 @@ body {
 
 
 /* MAIN */
-#content main {
+/* #content main {
 	width: 100%;
 	padding: 36px 24px;
 	font-family: var(--poppins);
@@ -522,67 +513,8 @@ body {
 }
 #content main .table-data .todo .todo-list li:last-child {
 	margin-bottom: 0;
-}
+} */
 /* MAIN */
 
 
 
-/* CONTENT */
-@media screen and (max-width: 768px) {
-	#sidebar {
-		width: 200px;
-	}
-
-	#content {
-		width: calc(100% - 60px);
-		left: 200px;
-	}
-
-	#content nav .nav-link {
-		display: none;
-	}
-}
-@media screen and (max-width: 576px) {
-	#content nav form .form-input input {
-		display: none;
-	}
-
-	#content nav form .form-input button {
-		width: auto;
-		height: auto;
-		background: transparent;
-		border-radius: none;
-		color: var(--dark);
-	}
-
-	#content nav form.show .form-input input {
-		display: block;
-		width: 100%;
-	}
-	#content nav form.show .form-input button {
-		width: 36px;
-		height: 100%;
-		border-radius: 0 36px 36px 0;
-		color: var(--light);
-		background: var(--red);
-	}
-
-	#content nav form.show ~ .notification,
-	#content nav form.show ~ .profile {
-		display: none;
-	}
-
-	#content main .box-info {
-		grid-template-columns: 1fr;
-	}
-
-	#content main .table-data .head {
-		min-width: 420px;
-	}
-	#content main .table-data .order table {
-		min-width: 420px;
-	}
-	#content main .table-data .todo .todo-list {
-		min-width: 420px;
-	}
-}

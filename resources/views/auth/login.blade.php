@@ -61,7 +61,7 @@
 
         <form method="POST" action="{{route('admin.login')}}" id="login-form" class="login-form" novalidate>
           <!-- Email Field -->
-          {{-- @csrf --}}
+          @csrf
           <div class="form-group">
             <label for="email">
               <i class='bx bxs-envelope'></i> Email *

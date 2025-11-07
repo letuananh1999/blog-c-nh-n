@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +18,14 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        // Tạo admin user với password được hash đúng
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password123'),  // ← Luôn hash!
+            'role' => 'admin'
+        ]);
+
         // Tạo 5 category trước
         $categories = Category::factory(20)->create();
 
