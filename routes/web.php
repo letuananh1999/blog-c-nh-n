@@ -20,8 +20,8 @@ Route::prefix('admin')
     Route::middleware(['auth', 'checkrole:admin'])
       ->group(function () {
         Route::get('/', function () {
-          return view('admin.dashboard');
-        })->name('dashboard');
+          return view('admin.index');
+        })->name('index');
 
         Route::resource('categories', CategoryController::class);
         Route::resource('posts', PostController::class);
