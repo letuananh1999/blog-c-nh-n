@@ -1,0 +1,632 @@
+/* dangnhap.css - Giao diện đăng nhập đẹp mắt - Tối ưu */
+
+/* ===== CSS VARIABLES ===== */
+:root {
+  --primary: #3C91E6;
+  --primary-light: #6dd5ed;
+  --text: #04202a;
+  --text-light: #6b7280;
+  --border: #e5e7eb;
+  --bg-light: #f0f4f8;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --glass: rgba(60, 145, 230, 0.05);
+  --white-15: rgba(255, 255, 255, 0.15);
+  --white-12: rgba(255, 255, 255, 0.12);
+  --white-08: rgba(255, 255, 255, 0.08);
+  --white-06: rgba(255, 255, 255, 0.06);
+  --white-02: rgba(255, 255, 255, 0.2);
+  --red-light: rgba(239, 68, 68, 0.02);
+}
+
+/* ===== RESET & BASE ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ===== LAYOUT CONTAINERS ===== */
+.login-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.login-left {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(60, 145, 230, 0.7), rgba(109, 213, 237, 0.7)), 
+              url('/img/auth/image 29.png') center/cover no-repeat;
+  background-blend-mode: overlay;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.login-left::before,
+.login-left::after {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle);
+}
+
+.login-left::before {
+  width: 400px;
+  height: 400px;
+  background: var(--white-08);
+  top: -100px;
+  right: -100px;
+}
+
+.login-left::after {
+  width: 300px;
+  height: 300px;
+  background: var(--white-06);
+  bottom: -50px;
+  left: -50px;
+}
+
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--bg-light);
+  overflow: hidden;
+}
+
+/* ===== LEFT PANEL CONTENT ===== */
+.left-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  max-width: 400px;
+  max-height: 100%;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--white-02);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.brand-section h1 {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* ===== CARDS ===== */
+.illustration {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.illustration-card,
+.testimonial {
+  background: var(--white-15);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.illustration-card {
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.illustration-card i {
+  font-size: 32px;
+  min-width: 40px;
+}
+
+.illustration-card p {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.illustration-card:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(8px);
+}
+
+.testimonial {
+  background: var(--white-12);
+  padding: 24px;
+}
+
+.testimonial-text {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.testimonial-author {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.author-avatar {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.author-name,
+.author-role {
+  margin: 0;
+}
+
+.author-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.author-role {
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* ===== FORM WRAPPER ===== */
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.form-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.form-header p {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* ===== FORM GROUPS ===== */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-group label i {
+  font-size: 16px;
+  color: var(--primary);
+}
+
+.form-group input {
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--text);
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--glass);
+}
+
+.form-group input::placeholder {
+  color: #a0aec0;
+}
+
+.form-group.error input {
+  border-color: var(--danger) !important;
+  background: var(--red-light);
+}
+
+/* ===== PASSWORD TOGGLE ===== */
+.password-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrap input {
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-light);
+  font-size: 18px;
+  transition: color 0.2s;
+  padding: 4px 8px;
+}
+
+.toggle-password:hover {
+  color: var(--primary);
+}
+
+/* ===== ERROR & VALIDATION ===== */
+.form-error {
+  font-size: 12px;
+  color: var(--danger);
+  min-height: 18px;
+  display: none;
+}
+
+.form-group.error .form-error {
+  display: block;
+}
+
+/* ===== FORM FOOTER (Remember & Forgot) ===== */
+.form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.forgot-password {
+  font-size: 13px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.forgot-password:hover {
+  color: var(--primary-light);
+  text-decoration: underline;
+}
+
+/* ===== BUTTONS ===== */
+.btn-submit {
+  padding: 14px 24px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  box-shadow: 0 4px 15px rgba(60, 145, 230, 0.3);
+}
+
+.btn-submit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(60, 145, 230, 0.4);
+}
+
+.btn-submit:active {
+  transform: translateY(0);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== LINKS ===== */
+.signup-link {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.signup-link a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.signup-link a:hover {
+  color: var(--primary-light);
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Mobile: 320px - 480px */
+@media (max-width: 480px) {
+  .login-container { flex-direction: column; height: auto; min-height: 100vh; }
+  .login-left { flex: none; min-height: 200px; padding: 20px 16px; }
+  .login-right { flex: none; padding: 20px 16px; overflow-y: auto; }
+  .left-content { gap: 16px; max-width: 100%; }
+  .brand-section { gap: 8px; justify-content: center; }
+  .brand-icon { width: 36px; height: 36px; font-size: 18px; }
+  .brand-section h1 { font-size: 16px; letter-spacing: 0; }
+  .illustration { gap: 8px; }
+  .illustration-card { padding: 9px; gap: 8px; border-radius: 12px; }
+  .illustration-card i { font-size: 14px; min-width: 18px; }
+  .illustration-card p { font-size: 10px; }
+  .illustration-card:hover { transform: none; }
+  .testimonial { padding: 10px; border-radius: 12px; }
+  .testimonial-text { font-size: 9px; line-height: 1.4; margin-bottom: 6px; }
+  .testimonial-author { gap: 6px; }
+  .author-avatar { width: 28px; height: 28px; font-size: 9px; }
+  .author-name { font-size: 9px; }
+  .author-role { font-size: 8px; }
+  .form-wrapper { width: 100%; max-width: 100%; }
+  .form-header { margin-bottom: 16px; }
+  .form-header h2 { font-size: 16px; margin-bottom: 3px; }
+  .form-header p { font-size: 10px; }
+  .login-form { gap: 10px; }
+  .form-group { gap: 4px; }
+  .form-group label { font-size: 10px; gap: 4px; }
+  .form-group label i { font-size: 12px; }
+  .form-group input { padding: 8px 10px; border-radius: 8px; font-size: 13px; }
+  .toggle-password { right: 10px; font-size: 14px; }
+  .btn-submit { padding: 9px 12px; font-size: 12px; gap: 6px; margin-top: 4px; border-radius: 8px; }
+  .btn-submit i { font-size: 14px; }
+  .form-footer { font-size: 10px; }
+  .remember-me { gap: 4px; font-size: 10px; }
+  .remember-me input { width: 14px; height: 14px; }
+  .forgot-password { font-size: 10px; }
+  .signup-link { margin-top: 8px; font-size: 10px; }
+  .form-error { font-size: 8px; min-height: 12px; }
+}
+
+/* Tablet Small: 481px - 768px */
+@media (min-width: 481px) and (max-width: 768px) {
+  .login-container { flex-direction: column; height: auto; min-height: 100vh; }
+  .login-left { flex: none; min-height: 250px; padding: 25px 20px; }
+  .login-right { flex: none; padding: 25px 20px; overflow-y: auto; }
+  .left-content { gap: 20px; max-width: 100%; }
+  .brand-section { gap: 10px; justify-content: center; }
+  .brand-icon { width: 40px; height: 40px; font-size: 20px; }
+  .brand-section h1 { font-size: 18px; }
+  .illustration { gap: 10px; }
+  .illustration-card { padding: 11px; gap: 10px; }
+  .illustration-card i { font-size: 16px; min-width: 20px; }
+  .illustration-card p { font-size: 11px; }
+  .testimonial { padding: 12px; }
+  .testimonial-text { font-size: 10px; margin-bottom: 8px; }
+  .testimonial-author { gap: 8px; }
+  .author-avatar { width: 32px; height: 32px; font-size: 10px; }
+  .author-name { font-size: 10px; }
+  .author-role { font-size: 9px; }
+  .form-header { margin-bottom: 20px; }
+  .form-header h2 { font-size: 18px; margin-bottom: 4px; }
+  .form-header p { font-size: 11px; }
+  .login-form { gap: 12px; }
+  .form-group { gap: 5px; }
+  .form-group label { font-size: 11px; }
+  .form-group input { padding: 9px 11px; font-size: 14px; }
+  .btn-submit { padding: 10px 16px; font-size: 13px; }
+  .form-footer { font-size: 10px; }
+  .remember-me { gap: 5px; font-size: 10px; }
+  .remember-me input { width: 15px; height: 15px; }
+  .forgot-password { font-size: 10px; }
+  .signup-link { font-size: 11px; }
+}
+
+/* Tablet Portrait: 769px - 1024px */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .login-container { flex-direction: column; height: auto; min-height: 100vh; }
+  .login-left { flex: none; min-height: 300px; padding: 30px 25px; }
+  .login-right { flex: none; padding: 30px 25px; overflow-y: auto; }
+  .left-content { gap: 25px; max-width: 100%; }
+  .brand-section { gap: 10px; justify-content: center; }
+  .brand-icon { width: 44px; height: 44px; font-size: 22px; }
+  .brand-section h1 { font-size: 20px; }
+  .illustration { gap: 12px; }
+  .illustration-card { padding: 12px; gap: 12px; }
+  .illustration-card i { font-size: 18px; min-width: 22px; }
+  .illustration-card p { font-size: 12px; }
+  .testimonial { padding: 14px; }
+  .testimonial-text { font-size: 11px; margin-bottom: 10px; }
+  .testimonial-author { gap: 8px; }
+  .author-avatar { width: 36px; height: 36px; font-size: 11px; }
+  .author-name { font-size: 11px; }
+  .author-role { font-size: 10px; }
+  .form-wrapper { max-width: 380px; }
+  .form-header { margin-bottom: 22px; }
+  .form-header h2 { font-size: 20px; margin-bottom: 4px; }
+  .form-header p { font-size: 12px; }
+  .login-form { gap: 14px; }
+  .form-group { gap: 5px; }
+  .form-group label { font-size: 11px; }
+  .form-group input { padding: 10px 12px; font-size: 14px; }
+  .btn-submit { padding: 11px 18px; font-size: 13px; }
+  .form-footer { font-size: 11px; }
+  .remember-me { gap: 6px; font-size: 11px; }
+  .remember-me input { width: 16px; height: 16px; }
+  .forgot-password { font-size: 11px; }
+  .signup-link { font-size: 11px; }
+}
+
+/* Tablet Landscape: 1025px - 1280px */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .login-container { flex-direction: row; height: 100vh; overflow: hidden; }
+  .login-left { flex: 0.45; padding: 30px; overflow: hidden; }
+  .login-right { flex: 0.55; padding: 0px 20px 0px 30px; overflow: hidden; }
+  .left-content { gap: 30px; max-width: 100%; }
+  .brand-section { gap: 10px; }
+  .brand-icon { width: 44px; height: 44px; font-size: 22px; }
+  .brand-section h1 { font-size: 20px; }
+  .illustration { gap: 12px; }
+  .illustration-card { padding: 12px; gap: 10px; }
+  .illustration-card i { font-size: 18px; min-width: 20px; }
+  .illustration-card p { font-size: 12px; }
+  .testimonial { padding: 12px; }
+  .testimonial-text { font-size: 11px; margin-bottom: 8px; }
+  .author-avatar { width: 34px; height: 34px; font-size: 10px; }
+  .author-name { font-size: 10px; }
+  .author-role { font-size: 9px; }
+  .form-wrapper { max-width: 100%; overflow: hidden; }
+  .form-header { margin-bottom: 20px; }
+  .form-header h2 { font-size: 20px; margin-bottom: 4px; }
+  .form-header p { font-size: 12px; }
+  .login-form { gap: 12px; }
+  .form-group { gap: 4px; }
+  .form-group label { font-size: 11px; }
+  .form-group input { padding: 9px 11px; font-size: 13px; }
+  .btn-submit { padding: 9px 14px; font-size: 12px; }
+  .form-footer { font-size: 10px; }
+  .remember-me { gap: 4px; font-size: 10px; }
+  .remember-me input { width: 14px; height: 14px; }
+  .forgot-password { font-size: 10px; }
+  .signup-link { font-size: 10px; }
+}
+
+/* Desktop: 1281px - 1440px */
+@media (min-width: 1281px) and (max-width: 1440px) {
+  .login-container { flex-direction: row; height: 100vh; overflow: hidden; }
+  .login-left { flex: 0.5; padding: 35px; overflow: hidden; }
+  .login-right { flex: 0.5; padding: 35px; overflow: hidden; }
+  .left-content { gap: 35px; max-width: 380px; }
+  .brand-section { gap: 12px; }
+  .brand-icon { width: 48px; height: 48px; font-size: 24px; }
+  .brand-section h1 { font-size: 22px; }
+  .illustration { gap: 12px; }
+  .illustration-card { padding: 14px; gap: 12px; }
+  .illustration-card i { font-size: 20px; min-width: 24px; }
+  .illustration-card p { font-size: 13px; }
+  .testimonial { padding: 14px; }
+  .testimonial-text { font-size: 12px; margin-bottom: 10px; }
+  .testimonial-author { gap: 10px; }
+  .author-avatar { width: 40px; height: 40px; font-size: 11px; }
+  .author-name { font-size: 11px; }
+  .author-role { font-size: 10px; }
+  .form-wrapper { max-width: 380px; overflow: hidden; }
+  .form-header { margin-bottom: 24px; }
+  .form-header h2 { font-size: 22px; margin-bottom: 6px; }
+  .form-header p { font-size: 13px; }
+  .login-form { gap: 14px; }
+  .form-group { gap: 6px; }
+  .form-group label { font-size: 12px; }
+  .form-group input { padding: 10px 12px; font-size: 14px; }
+  .btn-submit { padding: 11px 18px; font-size: 13px; }
+  .form-footer { font-size: 11px; }
+  .remember-me { gap: 6px; font-size: 11px; }
+  .remember-me input { width: 16px; height: 16px; }
+  .forgot-password { font-size: 11px; }
+  .signup-link { font-size: 11px; }
+}
+
+/* Large Desktop: 1441px+ */
+@media (min-width: 1441px) {
+  .login-container { flex-direction: row; height: 100vh; overflow: hidden; }
+  .login-left { flex: 0.5; padding: 40px; overflow: hidden; }
+  .login-right { flex: 0.5; padding: 40px; overflow: hidden; }
+  .left-content { gap: 50px; max-width: 400px; }
+  .brand-section { gap: 16px; }
+  .brand-icon { width: 60px; height: 60px; font-size: 32px; }
+  .brand-section h1 { font-size: 32px; }
+  .illustration { gap: 16px; }
+  .illustration-card { padding: 20px; gap: 16px; }
+  .illustration-card i { font-size: 32px; min-width: 40px; }
+  .illustration-card p { font-size: 15px; }
+  .testimonial { padding: 24px; }
+  .testimonial-text { font-size: 14px; margin-bottom: 16px; }
+  .testimonial-author { gap: 12px; }
+  .author-avatar { width: 48px; height: 48px; font-size: 14px; }
+  .author-name { font-size: 13px; }
+  .author-role { font-size: 12px; }
+  .form-wrapper { max-width: 420px; overflow: hidden; }
+  .form-header { margin-bottom: 32px; }
+  .form-header h2 { font-size: 28px; margin-bottom: 8px; }
+  .form-header p { font-size: 14px; }
+  .login-form { gap: 18px; }
+  .form-group { gap: 8px; }
+  .form-group label { font-size: 13px; }
+  .form-group input { padding: 12px 16px; font-size: 14px; }
+  .btn-submit { padding: 14px 24px; font-size: 15px; }
+  .form-footer { font-size: 13px; }
+  .remember-me { gap: 8px; font-size: 13px; }
+  .remember-me input { width: 18px; height: 18px; }
+  .forgot-password { font-size: 13px; }
+  .signup-link { font-size: 13px; }
+}
