@@ -43,7 +43,10 @@
 				</a>
 			</li>
 			<li>
-				<a href="#" class="logout">
+				<form method="POST" action="{{ route('admin.logout') }}" id="logout-form" style="display:none;">
+					@csrf
+				</form>
+				<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="logout">
 					<i class='bx bxs-log-out-circle' ></i>
 					<span class="text">Logout</span>
 				</a>

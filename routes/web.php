@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CommentController;
 
+// Root route - redirect tới login
+Route::redirect('/', '/admin/login');
+
 Route::prefix('admin')
   ->name('admin.')
   ->group(function () {
