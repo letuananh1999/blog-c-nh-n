@@ -74,6 +74,9 @@
               value="{{old('email')}}"
               required
             />
+            @error('email')
+              <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
             <span class="form-error"></span>
           </div>
 
@@ -91,10 +94,14 @@
                 required
                 minlength="8"
               />
+              
               <button type="button" class="toggle-password" data-target="password">
                 <i class='bx bx-hide'></i>
               </button>
             </div>
+            @error('password')
+                <div class="alert alert-danger">{{ $message }}</div>
+              @enderror
             <span class="form-error"></span>
           </div>
 
