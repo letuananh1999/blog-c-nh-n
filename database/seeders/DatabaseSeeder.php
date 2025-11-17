@@ -26,15 +26,18 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
-        // Tạo 5 category trước
-        $categories = Category::factory(20)->create();
+        // Tạo 10 category trước
+        $categories = Category::factory(10)->create();
 
-        // Mỗi category có 10 post
+        // Mỗi category có 20 post
         $categories->each(function ($category) {
-            $posts = Post::factory(10)->create([
+            $posts = Post::factory(20)->create([
                 'category_id' => $category->id
             ]);
-
+            // Cập nhật sort = số post vừa tạo
+            $category->update([
+                'sort' => $posts->count()
+            ]);
             // Mỗi post có 3-5 comment
             $posts->each(function ($post) {
                 Comment::factory(rand(3, 5))->create([
