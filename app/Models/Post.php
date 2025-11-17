@@ -9,11 +9,22 @@ class Post extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'category_id',
+        'user_id',
         'title',
         'slug',
+        'excerpt',
         'content',
-        'is_published'
+        'thumbnail',
+        'meta_title',
+        'meta_description',
+        'status',
+        'views_count',
+        'likes_count',
+        'published_at',
+        'created_at',
+        'updated_at',
     ];
     public function category()
     {

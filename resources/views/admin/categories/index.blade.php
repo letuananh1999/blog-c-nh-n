@@ -26,15 +26,16 @@
         </div>
 
         <section class="cards-grid" aria-label="Danh sách thẻ danh mục">
+          @foreach($categories as $category)
           <article class="cat-card card" data-id="1">
             <div class="card-top">
-              <h3 class="card-title">Design</h3>
-              <span class="badge">12</span>
+              <h3 class="card-title">{{$category->name}}</h3>
+              <span class="badge">{{$category->sort}}</span>
             </div>
-            <p class="muted">Bài về UI, UX và thiết kế giao diện.</p>
+            <p class="muted">{{$category->description}}</p>
           </article>
-
-          <article class="cat-card card" data-id="2">
+          @endforeach
+          {{-- <article class="cat-card card" data-id="2">
             <div class="card-top">
               <h3 class="card-title">Development</h3>
               <span class="badge">8</span>
@@ -48,7 +49,7 @@
               <span class="badge">5</span>
             </div>
             <p class="muted">Chiến lược nội dung và SEO.</p>
-          </article>
+          </article> --}}
         </section>
 
         <div class="card table-card">
@@ -66,14 +67,16 @@
               </thead>
               <tbody>
                 <!-- Ví dụ: nếu bạn render động bằng JS, script bên dưới sẽ thêm data-label cho từng td -->
+                 @foreach($categories as $category)
                 <tr>
-                  <td>1</td>
-                  <td>Design</td>
-                  <td>UI/UX & thiết kế</td>
-                  <td>12</td>
-                  <td>2025-09-20</td>
+                  <td>{{ $category->id }}</td>
+                  <td>{{ $category->name }}</td>
+                  <td>{{ $category->description }}</td>
+                  <td>{{ $category->sort }}</td>
+                  <td>{{ $category->created_at->format('Y-m-d') }}</td>
                   <td><button class="btn small">Sửa</button> <button class="btn small danger">Xóa</button></td>
                 </tr>
+                @endforeach
                 <!-- JS sẽ tự thêm data-label dựa trên thead -->
               </tbody>
             </table>

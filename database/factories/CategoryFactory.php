@@ -21,6 +21,8 @@ class CategoryFactory extends Factory
         return [
             'name' => ucfirst($name),
             'slug' => Str::slug($name),
+            'description' => $this->faker->sentence(),
+            'sort' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

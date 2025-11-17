@@ -10,7 +10,14 @@ use Illuminate\Support\Str;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'sort',
+        'description',
+        'created_at',
+        'updated_at',
+    ];
 
     protected static function boot()
     {
@@ -24,6 +31,6 @@ class Category extends Model
     }
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class, 'category_id', 'id');
     }
 }
