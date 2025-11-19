@@ -80,6 +80,7 @@
                 <!-- JS sẽ tự thêm data-label dựa trên thead -->
               </tbody>
             </table>
+              {{-- {{$categories->links()}} --}}
           </div>
         </div>
       </div>

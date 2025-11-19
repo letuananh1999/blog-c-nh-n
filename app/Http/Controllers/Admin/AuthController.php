@@ -23,7 +23,7 @@ class AuthController extends Controller
         //     'password' => 'required'
         // ]);
 
-        $credentials = $request->only('email', 'password');
+        // $credentials = $request->only('email', 'password');
 
         // Kiểm tra đăng nhập
         if (Auth::attempt([
