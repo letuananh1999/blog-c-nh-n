@@ -19,7 +19,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['category', 'tags', 'user'])->latest()->paginate(10);
+        $posts = Post::withCount(['category', 'tags', 'user'])
+            ->orderBy('created_at', 'desc')
+            // ->paginate(10);
+            ->get();
         // return PostResource::collection($posts); // nếu là API
         return view('admin.post.index', compact('posts'));
     }
@@ -35,7 +38,7 @@ class PostController extends Controller
     {
         $post = Post::create([
             'title' => $request->title,
-            'content' => $request->content,
+            // 'content' => $request->content,
             'category_id' => $request->category_id,
             'user_id' => Auth()->id = 1,
             'slug' => Str::slug($request->title),
@@ -65,7 +68,7 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->update([
             'title' => $request->title,
-            'content' => $request->content,
+            // 'content' => $request->content,
             'category_id' => $request->category_id,
             'slug' => Str::slug($request->title),
             'is_published' => $request->has('is_published'),

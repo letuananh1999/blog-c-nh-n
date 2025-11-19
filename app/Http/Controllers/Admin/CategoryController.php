@@ -14,6 +14,7 @@ class CategoryController extends Controller
         // Hiển thị danh sách danh mục
         $categories = Category::withCount('posts')
             ->orderBy('sort', 'asc')
+            // ->paginate(5);
             ->get();
         return view('admin.categories.index', compact('categories'));
     }

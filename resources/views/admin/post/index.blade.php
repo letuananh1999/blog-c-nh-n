@@ -46,10 +46,17 @@
 				<section class="posts-area" id="posts-area">
 					<!-- Static posts: moved from JS into HTML so markup is editable and can be replaced by server data later -->
 					<div id="posts" class="posts-list">
-						<article class="post-card" data-id="1" data-title="10 nguyên tắc UI cơ bản" data-excerpt="Tối giản, tương phản và hệ thống lưới — các nguyên tắc căn bản cho UI." data-tags="design,ui,ux" data-date="2025-01-12" data-views="1245">
-							<div class="content">
-								<h3>10 nguyên tắc UI cơ bản</h3>
-								<p class="excerpt">Tối giản, tương phản và hệ thống lưới — các nguyên tắc căn bản cho UI.</p>
+            @foreach($posts as $post)
+            <article class="post-card" data-id="{{ $post->id }}" 
+              data-title="{{ $post->title }}" 
+              data-excerpt="{{ Str::limit($post->content, 50) }}" 
+              data-date="{{ $post->created_at->format('Y-m-d') }}" 
+              data-views="{{ $post->views }}">
+              <div class="content">
+						{{-- <article class="post-card" data-id="1" data-title="10 nguyên tắc UI cơ bản" data-excerpt="Tối giản, tương phản và hệ thống lưới — các nguyên tắc căn bản cho UI." data-tags="design,ui,ux" data-date="2025-01-12" data-views="1245">
+							<div class="content"> --}}
+								<h3>{{ $post->title }}</h3>
+								<p class="excerpt">{{ Str::limit($post->content, 50) }}</p>
 								<div class="bottom">
 									<div class="tags">
                     <span>design</span>
@@ -65,8 +72,9 @@
 							</div>
 							<div class="post-full" style="display:none">Nội dung chi tiết về 10 nguyên tắc UI...</div>
 						</article>
+            @endforeach
 
-						<article class="post-card" data-id="2" data-title="Bộ icon miễn phí cho dự án" data-excerpt="Tải bộ icon đẹp dùng cho sản phẩm của bạn." data-tags="design,assets" data-date="2024-11-02" data-views="842">
+						{{-- <article class="post-card" data-id="2" data-title="Bộ icon miễn phí cho dự án" data-excerpt="Tải bộ icon đẹp dùng cho sản phẩm của bạn." data-tags="design,assets" data-date="2024-11-02" data-views="842">
 							<div class="content">
 								<h3>Bộ icon miễn phí cho dự án</h3>
 								<p class="excerpt">Tải bộ icon đẹp dùng cho sản phẩm của bạn.</p>
@@ -182,7 +190,7 @@
 								</div>
 							</div>
 							<div class="post-full" style="display:none">Cách viết docs...</div>
-						</article>
+						</article> --}}
 					</div>
 				</section>
 
