@@ -29,16 +29,18 @@
           </div>
 
           <div class="cards-grid">
+            @foreach ($users as $user)
             <div class="user-card">
-              <div class="user-avatar">A</div>
-              <div class="user-info"><p class="user-name">Admin</p><p class="user-email">admin@example.com</p></div>
+              <div class="user-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+              <div class="user-info"><p class="user-name">{{ $user->name }}</p><p class="user-email">{{ $user->email }}</p></div>
               <div class="user-actions"><button class="action-btn ">Sửa</button><button class="action-btn">Khoá</button></div>
             </div>
-            <div class="user-card">
+            @endforeach
+            {{-- <div class="user-card">
               <div class="user-avatar">T</div>
               <div class="user-info"><p class="user-name">Tran</p><p class="user-email">tran@example.com</p></div>
               <div class="user-actions"><button class="action-btn">Sửa</button><button class="action-btn">Khoá</button></div>
-            </div>
+            </div> --}}
           </div>
 
           <div class="table-card card">
@@ -54,22 +56,25 @@
                 </tr>
               </thead>
               <tbody>
+                @foreach ($users as $user)
                 <tr>
-                  <td>1</td>
-                  <td>Admin</td>
-                  <td>admin@example.com</td>
-                  <td>Admin</td>
-                  <td>Active</td>
+                  <td>{{ $user->id }}</td>
+                  <td>{{ $user->name }}</td>
+                  <td>{{ $user->email }}</td>
+                  <td>{{ $user->role }}</td>
+                  <td>{{ $user->status }}</td>
                   <td><button class="btn secondary">Sửa</button></td>
                 </tr>
-                <tr>
+                @endforeach
+               
+                {{-- <tr>
                   <td>2</td>
                   <td>Tran</td>
                   <td>tran@example.com</td>
                   <td>User</td>
                   <td>Blocked</td>
                   <td><button class="btn secondary">Sửa</button></td>
-                </tr>
+                </tr> --}}
               </tbody>
             </table>
           </div>
