@@ -22,7 +22,5 @@ class AppServiceProvider extends ServiceProvider
     {
         // kích hoạt Bootstrap 5 cho phân trang
         // Paginator::useBootstrapFive();
-        // kích hoạt Bootstrap 4 cho phân trang
-        Paginator::useBootstrapFour();
     }
 }

@@ -44,16 +44,17 @@
 								</div>
 
 								<div class="comments-list">
-									<article class="comment-card" data-comment-id="1">
-										<div class="comment-avatar">A</div>
+									@foreach($comments as $comment)
+									<article class="comment-card" data-comment-id="{{ $comment->id }}">
+										<div class="comment-avatar">{{ strtoupper(substr($comment->author_name, 0, 1)) }}</div>
 										<div class="comment-body">
-											<div class="comment-meta"><strong>Anh An</strong>
+											<div class="comment-meta"><strong>{{ $comment->author_name }}</strong>
                         <span>•</span>
-                        <span>Bài: 10 nguyên tắc UI</span>
+                        <span>Bài: {{ Str::limit($comment->post->title, 15) }}</span>
                         <span>•</span>
-                        <span>2025-09-12</span>
+                        <span>{{ $comment->created_at->format('Y-m-d') }}</span>
                       </div>
-											<div class="comment-text">Bài viết rất hữu ích, cảm ơn tác giả! Tôi có một câu hỏi về việc...</div>
+											<div class="comment-text">{{ Str::limit($comment->content, 50) }}</div>
 											<div class="comment-actions">
 												<button class="action-btn positive">Duyệt</button>
 												<button class="action-btn">Trả lời</button>
@@ -61,8 +62,15 @@
 											</div>
 										</div>
 									</article>
+									@endforeach
+								</div>
 
-									<article class="comment-card" data-comment-id="2">
+								<!-- Pagination -->
+								<ul class="pagination">
+										{{ $comments->links() }}
+								</ul>
+
+									{{-- <article class="comment-card" data-comment-id="2">
 										<div class="comment-avatar">B</div>
 										<div class="comment-body">
 											<div class="comment-meta"><strong>Bé Bình</strong>
@@ -78,10 +86,10 @@
 												<button class="action-btn danger">Ẩn</button>
 											</div>
 										</div>
-									</article>
+									</article> --}}
 								</div>
 
-								<div class="table-card card">
+								{{-- <div class="table-card card">
 									<table>
 										<thead>
 											<tr>
@@ -94,31 +102,23 @@
                         <th>Hành động</th>
 										</thead>
 										<tbody>
+											@foreach($comments as $comment)
 											<tr>
-                        <td>1</td>
-                        <td>Rất hay!</td>
-                        <td>An</td>
-                        <td>10 nguyên tắc UI</td>
-                        <td>2025-09-12</td>
-                        <td>Hiện</td>
+                        <td>{{ $comment->id }}</td>
+                        <td>{{ Str::limit($comment->content, 15) }}</td>
+                        <td>{{ $comment->author_name }}</td>
+                        <td>{{ Str::limit($comment->post->title, 15) }}</td>
+                        <td>{{ $comment->created_at->format('Y-m-d') }}</td>
+                        <td>{{ $comment->status }}</td>
                         <td>
                           <button class="btn">Sửa</button>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Không chính xác</td>
-                        <td>Bình</td>
-                        <td>Node patterns</td>
-                        <td>2025-08-21</td>
-                        <td>Chờ</td>
-                        <td>
-                          <button class="btn">Sửa hoặc xem</button>
-                        </td>
-                    </tr>
+                    	</tr>
+											@endforeach
+                  
 										</tbody>
 									</table>
-								</div>
+								</div> --}}
 							</section>
 							<footer class="foot">© 2025 AdminHub · Giao diện mẫu</footer>
 

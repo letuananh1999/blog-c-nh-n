@@ -36,11 +36,6 @@
               <div class="user-actions"><button class="action-btn ">Sửa</button><button class="action-btn">Khoá</button></div>
             </div>
             @endforeach
-            {{-- <div class="user-card">
-              <div class="user-avatar">T</div>
-              <div class="user-info"><p class="user-name">Tran</p><p class="user-email">tran@example.com</p></div>
-              <div class="user-actions"><button class="action-btn">Sửa</button><button class="action-btn">Khoá</button></div>
-            </div> --}}
           </div>
 
           <div class="table-card card">
@@ -66,15 +61,6 @@
                   <td><button class="btn secondary">Sửa</button></td>
                 </tr>
                 @endforeach
-               
-                {{-- <tr>
-                  <td>2</td>
-                  <td>Tran</td>
-                  <td>tran@example.com</td>
-                  <td>User</td>
-                  <td>Blocked</td>
-                  <td><button class="btn secondary">Sửa</button></td>
-                </tr> --}}
               </tbody>
             </table>
           </div>
