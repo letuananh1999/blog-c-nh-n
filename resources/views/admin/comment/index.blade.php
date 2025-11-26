@@ -4,7 +4,7 @@
 		<link rel="stylesheet" href="{{ asset('css/comment/index.css') }}">	
 @endpush
 @section('content')
-						<div class="container">
+						<div class="containerr">
 							<section class="comments-wrap">
 								<div class="head-row">
 									<div class="form-blog-header">
@@ -66,8 +66,8 @@
 								</div>
 
 								<!-- Pagination -->
-								<ul class="pagination">
-										{{ $comments->links() }}
+								 <ul class="pagination">
+   							 {{ $comments->links() }}
 								</ul>
 
 									{{-- <article class="comment-card" data-comment-id="2">

@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/user/index.css') }}">
 @endpush
 @section('content')
-<div class="container">
+<div class="containerr">
     <section class="users-wrap">
         <div class="head-row head-title">
             <div class="left">
@@ -36,6 +36,9 @@
               <div class="user-actions"><button class="action-btn ">Sửa</button><button class="action-btn">Khoá</button></div>
             </div>
             @endforeach
+             <ul class="pagination">
+              {{$users->links()}}
+             </ul>
           </div>
 
           <div class="table-card card">
@@ -63,6 +66,9 @@
                 @endforeach
               </tbody>
             </table>
+             {{-- <ul class="pagination">
+              {{$users->links()}}   
+            </ul> --}}
           </div>
             
   </section>

@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/category/index.css') }}">
 @endpush
 @section('content')
-      <div class="container categories-page">
+      <div class="containerr categories-page">
         <div class="cat-head head-title" role="banner" aria-label="Danh mục header">
           <div class="cat-head-left left">
             <h1 class="cat-title">Danh sách danh mục</h1>
@@ -27,7 +27,7 @@
 
         <section class="cards-grid" aria-label="Danh sách thẻ danh mục">
           @foreach($categories as $category)
-          <article class="cat-card card" data-id="1">
+          <article class="cat-card card" data-id="{{ $category->id }}">
             <div class="card-top">
               <h3 class="card-title">{{$category->name}}</h3>
               <span class="badge">{{$category->sort}}</span>
@@ -68,11 +68,11 @@
               <tbody>
                 <!-- Ví dụ: nếu bạn render động bằng JS, script bên dưới sẽ thêm data-label cho từng td -->
                  @foreach($categories as $category)
-                <tr>
+                <tr data-id="{{ $category->id }}">
                   <td>{{ $category->id }}</td>
                   <td>{{ $category->name }}</td>
                   <td>{{ $category->description }}</td>
-                  <td>{{ $category->sort }}</td>
+                  <td>{{ $category->posts_count }}</td>
                   <td>{{ $category->created_at->format('Y-m-d') }}</td>
                   <td><button class="btn small">Sửa</button> <button class="btn small danger">Xóa</button></td>
                 </tr>
@@ -80,7 +80,10 @@
                 <!-- JS sẽ tự thêm data-label dựa trên thead -->
               </tbody>
             </table>
-              {{-- {{$categories->links()}} --}}
+            <!-- Pagination wrapper riêng -->
+            <div class="pagination-wrapper">
+              {{ $categories->links() }}
+            </div>
           </div>
         </div>
       </div>
