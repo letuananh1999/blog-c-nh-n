@@ -21,8 +21,7 @@ class PostController extends Controller
     {
         $posts = Post::withCount(['category', 'tags', 'user'])
             ->orderBy('created_at', 'desc')
-            // ->paginate(10);
-            ->get();
+            ->paginate(10);
         // return PostResource::collection($posts); // nếu là API
         return view('admin.post.index', compact('posts'));
     }

@@ -185,7 +185,7 @@ html, body {
 
 /* Tablet: giữ bố cục full width, chỉ giảm lề */
 @media (max-width: 1024px) {
-  .container 
+  .containerr 
   { 
     padding: 16px; 
   }

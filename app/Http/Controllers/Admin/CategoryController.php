@@ -14,8 +14,7 @@ class CategoryController extends Controller
         // Hiển thị danh sách danh mục
         $categories = Category::withCount('posts')
             ->orderBy('sort', 'asc')
-            // ->paginate(5);
-            ->get();
+            ->paginate(10);
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -28,14 +27,23 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         // Xử lý lưu danh mục mới
-        $data = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
 
-        // Lưu danh mục vào cơ sở dữ liệu
-        Category::create($data);
-
-        return redirect()->route('admin.categories.index');
+        try {
+            Category::create($validated);
+            return response()->json([
+                'message' => 'Category created successfully',
+                'status' => true
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error creating category: ' . $e->getMessage(),
+                'status' => false
+            ], 500);
+        }
     }
 
     public function edit($id)
@@ -47,10 +55,41 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         // Xử lý cập nhật danh mục
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        try {
+            $category = Category::findOrFail($id);
+            $category->update($validated);
+            return response()->json([
+                'message' => 'Category updated successfully',
+                'status' => true
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error updating category: ' . $e->getMessage(),
+                'status' => false
+            ], 500);
+        }
     }
 
     public function destroy($id)
     {
         // Xử lý xóa danh mục
+        try {
+            $category = Category::findOrFail($id);
+            $category->delete();
+            return response()->json([
+                'message' => 'Category deleted successfully',
+                'status' => true
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error deleting category: ' . $e->getMessage(),
+                'status' => false
+            ], 500);
+        }
     }
 }

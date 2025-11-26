@@ -46,10 +46,13 @@
                   </div>
 								</div>
 							</div>
-							<div class="post-full" style="display:none">Nội dung chi tiết về 10 nguyên tắc UI...</div>
+							{{-- <div class="post-full" style="display:none">Nội dung chi tiết về 10 nguyên tắc UI...</div> --}}
 						</article>
             @endforeach
 					</div>
+                <ul style="margin-top: 10px" class="pagination">
+										{{ $posts->links() }}
+								</ul>
 				</section>
 
         <footer class="foot">© 2025 AdminHub · Giao diện mẫu</footer>
