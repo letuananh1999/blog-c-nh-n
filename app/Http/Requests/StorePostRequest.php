@@ -22,11 +22,24 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'       => 'required|string|max:255',
-            'content'     => 'required',
+            'id'          => 'sometimes|exists:posts,id',
             'category_id' => 'required|exists:categories,id',
-            'tags'        => 'array',
-            'tags.*'      => 'exists:tags,id'
+            'user_id'    => 'sometimes|exists:users,id',
+            'title'       => 'required|string|max:255',
+            'slug'        => 'sometimes|string|max:255|unique:posts,slug,' . $this->id,
+            'excerpt'     => 'nullable|string',
+            'content'     => 'required',
+            'thumbnail'   => 'nullable|image|max:2048',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string|max:500',
+            'status'      => 'required|in:draft,published,archived',
+            'view_count'  => 'sometimes|biginteger|min:0',
+            'like_count'  => 'sometimes|biginteger|min:0',
+            'published_at' => 'nullable|date',
+            // 'tags'        => 'array',
+            // 'tags.*'      => 'exists:tags,id'
+            'created_at'  => 'sometimes|date',
+            'updated_at'  => 'sometimes|date',
         ];
     }
 }

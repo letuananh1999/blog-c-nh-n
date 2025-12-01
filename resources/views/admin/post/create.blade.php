@@ -98,7 +98,7 @@
                   <button type="button" title="Trích dẫn"><i class='bx bx-quote'></i> Trích dẫn</button>
                   <button type="button" title="Code"><i class='bx bx-code'></i> Code</button>
                 </div>
-                <textarea name="description" class="editor-content" placeholder="Nhập nội dung chi tiết của bài viết tại đây. Bạn có thể dùng toolbar để định dạng text, thêm link, ảnh, v.v." required></textarea>
+                <textarea name="content" class="editor-content" placeholder="Nhập nội dung chi tiết của bài viết tại đây. Bạn có thể dùng toolbar để định dạng text, thêm link, ảnh, v.v." required></textarea>
               </div>
             </div>
           </div>

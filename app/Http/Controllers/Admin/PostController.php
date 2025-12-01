@@ -35,18 +35,34 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $post = Post::create([
-            'title' => $request->title,
-            // 'content' => $request->content,
-            'category_id' => $request->category_id,
-            'user_id' => Auth()->id = 1,
-            'slug' => Str::slug($request->title),
-            'is_published' => $request->has('is_published'),
-        ]);
-        if ($request->has('tags')) {
-            $post->tags()->attach($request->tags);
+        try {
+            $post = Post::create([
+                'title' => $request->title,
+                'slug' => Str::slug($request->title),
+                'excerpt' => $request->excerpt,
+                'content' => $request->content,
+                'category_id' => $request->category_id,
+                'user_id' => Auth::id(),
+                'thumbnail' => $request->thumbnail,
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'status' => $request->status ?? 'draft',
+                'view_count' => 0,
+                'like_count' => 0,
+                'published_at' => $request->status === 'published' ? now() : null,
+            ]);
+
+            if ($request->has('tags') && !empty($request->tags)) {
+                $post->tags()->attach($request->tags);
+            }
+
+            // xử lý lưu hình ảnh
+            if
+
+            return redirect()->route('admin.posts.index')->with('success', '✓ Tạo bài viết thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Lỗi: ' . $e->getMessage());
         }
-        return redirect()->route('posts.index')->with('success', 'Tạo bài viết thành công.');
     }
 
     public function show(Post $post)
@@ -58,31 +74,53 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $tags = Tag::all();
-        return view('posts.edit', compact('post', 'categories', 'tags'));
+        return view('admin.post.edit', compact('post', 'categories', 'tags'));
     }
 
 
     public function update(StorePostRequest $request, $id)
     {
-        $post = Post::findOrFail($id);
-        $post->update([
-            'title' => $request->title,
-            // 'content' => $request->content,
-            'category_id' => $request->category_id,
-            'slug' => Str::slug($request->title),
-            'is_published' => $request->has('is_published'),
-        ]);
-        if ($request->has('tags')) {
-            $post->tags()->sync($request->tags);
-        } else {
-            $post->tags()->detach();
+        try {
+            $post = Post::findOrFail($id);
+
+            $post->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'excerpt' => $request->excerpt,
+                'category_id' => $request->category_id,
+                'slug' => Str::slug($request->title),
+                'thumbnail' => $request->thumbnail,
+                'meta_title' => $request->meta_title,
+                'meta_description' => $request->meta_description,
+                'status' => $request->status ?? 'draft',
+                'published_at' => $request->status === 'published' ? ($post->published_at ?? now()) : null,
+            ]);
+
+            if ($request->has('tags') && !empty($request->tags)) {
+                $post->tags()->sync($request->tags);
+            } else {
+                $post->tags()->detach();
+            }
+
+            return redirect()->route('admin.posts.index')->with('success', '✓ Cập nhật bài viết thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', '❌ Lỗi: ' . $e->getMessage());
         }
-        return redirect()->route('posts.index')->with('success', 'Cập nhật bài viết thành công.');
     }
 
     public function destroy(Post $post)
     {
-        $post->delete();
-        return response()->json(['message' => 'Xóa bài viết thành công.']);
+        try {
+            $post->delete();
+            return response()->json([
+                'message' => '✓ Xóa bài viết thành công!',
+                'status' => true
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => '❌ Lỗi: ' . $e->getMessage(),
+                'status' => false
+            ], 500);
+        }
     }
 }
