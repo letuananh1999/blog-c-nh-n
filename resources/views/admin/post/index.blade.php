@@ -167,3 +167,6 @@
     </div>
   </div>
 @endsection
+@push('scripts')
+    <script src="{{ asset('js/posts/posts.js') }}" defer></script>  
+@endpush
