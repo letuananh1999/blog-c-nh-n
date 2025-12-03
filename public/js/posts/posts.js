@@ -162,19 +162,35 @@ if(modal) modal.addEventListener('click', function(e){ if(e.target.dataset.close
 // }
 
 function openEditModal(id){
-  // Redirect to edit-post.html with post ID
-  // Later you can pass ID via URL: edit-post.html?id=1
-  window.location.href = 'edit-post.html';
+  // Redirect to edit post page with ID
+  window.location.href = `/admin/posts/${id}/edit`;
 }
 
 function deletePost(id){
-  if(!confirm('Bạn chắc chắn muốn xóa bài viết này?')) return;
-  const node = postsContainer.querySelector('.post-card[data-id="' + id + '"]');
-  if(node){
-    node.remove();
-    alert('Bài viết đã được xóa!');
-    renderPosts();
-  }
+  if(!confirm('🗑️ Bạn chắc chắn muốn xóa bài viết này?')) return;
+  
+  fetch(`/admin/posts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status) {
+        const node = postsContainer.querySelector('.post-card[data-id="' + id + '"]');
+        if(node) node.remove();
+        alert('✓ Xóa bài viết thành công!');
+        renderPosts();
+      } else {
+        alert('❌ Lỗi: ' + (data.message || 'Không xác định'));
+      }
+    })
+    .catch(err => {
+      console.error('Delete error:', err);
+      alert('❌ Lỗi khi xóa: ' + err.message);
+    });
 }
 
 function escapeHtml(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }

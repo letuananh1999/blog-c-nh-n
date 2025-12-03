@@ -8,24 +8,36 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Tag;
+use App\Services\PostService;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    private PostService $postService;
+
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+    }
+
     /**
-     * Display a listing of the resource.
+     * Display a listing of posts with eager loading
      */
     public function index()
     {
-        $posts = Post::withCount(['category', 'tags', 'user'])
+        $posts = Post::with(['category', 'tags', 'user'])
+            ->withCount('comments')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
-        // return PostResource::collection($posts); // nếu là API
+            ->paginate(config('blog.post.per_page'));
+
         return view('admin.post.index', compact('posts'));
     }
 
+    /**
+     * Show the form for creating a new post
+     */
     public function create()
     {
         $categories = Category::all();
@@ -33,43 +45,33 @@ class PostController extends Controller
         return view('admin.post.create', compact('categories', 'tags'));
     }
 
+    /**
+     * Store a newly created post
+     */
     public function store(StorePostRequest $request)
     {
         try {
-            $post = Post::create([
-                'title' => $request->title,
-                'slug' => Str::slug($request->title),
-                'excerpt' => $request->excerpt,
-                'content' => $request->content,
-                'category_id' => $request->category_id,
-                'user_id' => Auth::id(),
-                'thumbnail' => $request->thumbnail,
-                'meta_title' => $request->meta_title,
-                'meta_description' => $request->meta_description,
-                'status' => $request->status ?? 'draft',
-                'view_count' => 0,
-                'like_count' => 0,
-                'published_at' => $request->status === 'published' ? now() : null,
-            ]);
-
-            if ($request->has('tags') && !empty($request->tags)) {
-                $post->tags()->attach($request->tags);
-            }
-
-            // xử lý lưu hình ảnh
-            if
-
-            return redirect()->route('admin.posts.index')->with('success', '✓ Tạo bài viết thành công!');
+            $post = $this->postService->create($request->validated());
+            return redirect()->route('admin.posts.index')
+                ->with('success', '✓ Tạo bài viết thành công!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', '❌ Lỗi: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', '❌ ' . $e->getMessage())
+                ->withInput();
         }
     }
 
+    /**
+     * Display the specified post
+     */
     public function show(Post $post)
     {
         return new PostResource($post->load(['category', 'tags', 'user', 'comments']));
     }
 
+    /**
+     * Show the form for editing the specified post
+     */
     public function edit(Post $post)
     {
         $categories = Category::all();
@@ -77,48 +79,41 @@ class PostController extends Controller
         return view('admin.post.edit', compact('post', 'categories', 'tags'));
     }
 
-
-    public function update(StorePostRequest $request, $id)
+    /**
+     * Update the specified post
+     */
+    public function update(StorePostRequest $request, Post $post)
     {
         try {
-            $post = Post::findOrFail($id);
+            $data = $request->validated();
+            $data['post'] = $post; // Pass post for comparison
 
-            $post->update([
-                'title' => $request->title,
-                'content' => $request->content,
-                'excerpt' => $request->excerpt,
-                'category_id' => $request->category_id,
-                'slug' => Str::slug($request->title),
-                'thumbnail' => $request->thumbnail,
-                'meta_title' => $request->meta_title,
-                'meta_description' => $request->meta_description,
-                'status' => $request->status ?? 'draft',
-                'published_at' => $request->status === 'published' ? ($post->published_at ?? now()) : null,
-            ]);
+            $post = $this->postService->update($post, $data);
 
-            if ($request->has('tags') && !empty($request->tags)) {
-                $post->tags()->sync($request->tags);
-            } else {
-                $post->tags()->detach();
-            }
-
-            return redirect()->route('admin.posts.index')->with('success', '✓ Cập nhật bài viết thành công!');
+            return redirect()->route('admin.posts.index')
+                ->with('success', '✓ Cập nhật bài viết thành công!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', '❌ Lỗi: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', '❌ ' . $e->getMessage())
+                ->withInput();
         }
     }
 
+    /**
+     * Remove the specified post
+     */
     public function destroy(Post $post)
     {
         try {
-            $post->delete();
+            $this->postService->delete($post);
+
             return response()->json([
                 'message' => '✓ Xóa bài viết thành công!',
                 'status' => true
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => '❌ Lỗi: ' . $e->getMessage(),
+                'message' => '❌ ' . $e->getMessage(),
                 'status' => false
             ], 500);
         }

@@ -1,48 +1,83 @@
 @extends('layouts.dashboard')
-@section('title', 'Post Detail')
+@section('title', 'Edit Post')
 @push('styles')
     <link rel="stylesheet" href="{{ asset('css/posts/edit.css') }}">  
 @endpush
 @section('content')
 	<div class="edit-post-container">
-				<!-- Back Button -->
-				<div class="edit-header">
-					<a href="detail-posts.html" class="back-link"><i class='bx bx-arrow-back'></i> Quay lại</a>
-				</div>
+		<!-- Back Button -->
+		<div class="edit-header">
+			<a href="{{ route('admin.posts.index') }}" class="back-link"><i class='bx bx-arrow-back'></i> Quay lại</a>
+		</div>
 
-				<!-- Edit Form Card -->
-				<div class="edit-card">
-					<h2><i class='bx bx-edit'></i> Sửa bài viết</h2>
-					
-					<form id="edit-post-form">
+		<!-- Edit Form Card -->
+		<div class="edit-card">
+			<h2><i class='bx bx-edit'></i> Sửa bài viết</h2>
+			
+			<form action="{{ route('admin.posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+				@csrf
+				@method('PUT')
 						<!-- Basic Info -->
 						<div class="edit-section">
 							<h3>Thông tin cơ bản</h3>
 
 							<div class="form-group">
 								<label>Tiêu đề <span class="required">*</span></label>
-								<input type="text" id="edit-title" value="10 nguyên tắc UI cơ bản" placeholder="Tiêu đề bài viết" required />
+								<input type="text" name="title" value="{{ old('title', $post->title) }}" placeholder="Tiêu đề bài viết" required />
+								@error('title')
+									<span class="error">{{ $message }}</span>
+								@enderror
 							</div>
 
 							<div class="form-group">
 								<label>Mô tả ngắn <span class="required">*</span></label>
-								<textarea id="edit-excerpt" placeholder="Mô tả ngắn (dùng cho preview)" required>Tối giản, tương phản và hệ thống lưới — các nguyên tắc căn bản cho UI.</textarea>
+								<textarea name="excerpt" placeholder="Mô tả ngắn (dùng cho preview)" required>{{ old('excerpt', $post->excerpt) }}</textarea>
+								@error('excerpt')
+									<span class="error">{{ $message }}</span>
+								@enderror
 							</div>
 
 							<div class="form-row">
 								<div class="form-group">
 									<label>Danh mục <span class="required">*</span></label>
-									<select id="edit-category" required>
-										<option value="design">Design</option>
-										<option value="dev">Dev</option>
-										<option value="marketing">Marketing</option>
-										<option value="business">Business</option>
+									<select name="category_id" required>
+										<option value="">-- Chọn danh mục --</option>
+										@foreach($categories as $category)
+											<option value="{{ $category->id }}" 
+												{{ old('category_id', $post->category_id) == $category->id ? 'selected' : '' }}>
+												{{ $category->name }}
+											</option>
+										@endforeach
 									</select>
+									@error('category_id')
+										<span class="error">{{ $message }}</span>
+									@enderror
 								</div>
 								<div class="form-group">
-									<label>Tags (cách nhau bằng dấu phẩy)</label>
-									<input type="text" id="edit-tags" value="design, ui, ux" placeholder="tag1, tag2, tag3" />
+									<label>Tags</label>
+									<select name="tags[]" multiple>
+										@foreach($tags as $tag)
+											<option value="{{ $tag->id }}"
+												{{ in_array($tag->id, $post->tags->pluck('id')->toArray()) ? 'selected' : '' }}>
+												{{ $tag->name }}
+											</option>
+										@endforeach
+									</select>
+									@error('tags')
+										<span class="error">{{ $message }}</span>
+									@enderror
 								</div>
+							</div>
+
+							<div class="form-group">
+								<label>Trạng thái</label>
+								<select name="status" required>
+									<option value="draft" {{ old('status', $post->status) == 'draft' ? 'selected' : '' }}>Draft (Nháp)</option>
+									<option value="published" {{ old('status', $post->status) == 'published' ? 'selected' : '' }}>Published (Công bố)</option>
+								</select>
+								@error('status')
+									<span class="error">{{ $message }}</span>
+								@enderror
 							</div>
 						</div>
 
@@ -51,13 +86,18 @@
 							<h3>Ảnh bìa</h3>
 							<div class="thumbnail-upload">
 								<div class="thumbnail-preview-area" id="thumbnailPreview">
-									<img src="https://via.placeholder.com/1200x400?text=Post+Thumbnail" alt="Current thumbnail" id="thumbnailImg">
+									@if($post->thumbnail)
+										<img src="{{ asset($post->thumbnail) }}" alt="Current thumbnail" id="thumbnailImg">
+									@else
+										<img src="https://via.placeholder.com/1200x400?text=No+Thumbnail" alt="No thumbnail" id="thumbnailImg">
+									@endif
 								</div>
 								<div class="thumbnail-controls">
 									<label class="btn-upload-label"><i class='bx bx-image'></i> Chọn ảnh</label>
-									<input type="file" id="thumbnailInput" accept="image/*" style="display:none;">
-									<button type="button" class="btn-remove"><i class='bx bx-trash'></i> Xóa ảnh</button>
+									<input type="file" name="thumbnail" id="thumbnailInput" accept="image/*" style="display:none;">
+									<button type="button" class="btn-remove" id="remove-thumbnail"><i class='bx bx-trash'></i> Xóa ảnh</button>
 								</div>
+								<p style="font-size: 12px; color: #999; margin-top: 8px;">Để trống nếu không muốn thay đổi ảnh hiện tại</p>
 							</div>
 						</div>
 
@@ -74,17 +114,10 @@
 								<button type="button" class="editor-btn" title="Video"><i class='bx bx-play'></i></button>
 								<button type="button" class="editor-btn" title="Code"><i class='bx bx-code'></i></button>
 							</div>
-							<textarea id="edit-content" class="editor-textarea" placeholder="Nội dung chi tiết bài viết..." required>UI (User Interface) là phần giao diện mà người dùng nhìn thấy và tương tác. Để tạo một giao diện tốt, bạn cần hiểu rõ 10 nguyên tắc cơ bản này:
-
-1. Tối giản
-Đừng quá tải giao diện với quá nhiều yếu tố. Mỗi element nên có một mục đích rõ ràng. Loại bỏ những thứ không cần thiết.
-
-2. Tương phản
-Sử dụng tương phản màu sắc để tạo sự phân biệt giữa các element. Điều này giúp người dùng dễ dàng nhận biết những phần quan trọng.
-
-3. Hệ thống lưới
-Sắp xếp các element theo một hệ thống lưới nhất quán. Điều này tạo cảm giác cân đối và chuyên nghiệp cho thiết kế.
-							</textarea>
+							<textarea name="content" class="editor-textarea" placeholder="Nội dung chi tiết bài viết..." required>{{ old('content', $post->content) }}</textarea>
+							@error('content')
+								<span class="error">{{ $message }}</span>
+							@enderror
 						</div>
 
 						<!-- SEO Meta -->
@@ -93,20 +126,26 @@ Sắp xếp các element theo một hệ thống lưới nhất quán. Điều n
 							
 							<div class="form-group">
 								<label>Meta Title</label>
-								<input type="text" id="edit-meta-title" value="10 nguyên tắc UI cơ bản - AdminHub" placeholder="Tiêu đề hiển thị trên Google" />
+								<input type="text" name="meta_title" value="{{ old('meta_title', $post->meta_title) }}" placeholder="Tiêu đề hiển thị trên Google" />
 								<small>Khuyến nghị: 50-60 ký tự</small>
+								@error('meta_title')
+									<span class="error">{{ $message }}</span>
+								@enderror
 							</div>
 
 							<div class="form-group">
 								<label>Meta Description</label>
-								<textarea id="edit-meta-description" placeholder="Mô tả hiển thị trên Google" maxlength="160">Tối giản, tương phản và hệ thống lưới — các nguyên tắc căn bản cho UI.</textarea>
+								<textarea name="meta_description" placeholder="Mô tả hiển thị trên Google" maxlength="160">{{ old('meta_description', $post->meta_description) }}</textarea>
 								<small>Khuyến nghị: 120-160 ký tự</small>
+								@error('meta_description')
+									<span class="error">{{ $message }}</span>
+								@enderror
 							</div>
 						</div>
 
 						<!-- Form Actions -->
 						<div class="form-actions">
-							<a href="detail-posts.html" class="btn-secondary"><i class='bx bx-x'></i> Hủy</a>
+							<a href="{{ route('admin.posts.index') }}" class="btn-secondary"><i class='bx bx-x'></i> Hủy</a>
 							<button type="submit" class="btn-primary"><i class='bx bx-check'></i> Lưu thay đổi</button>
 						</div>
 					</form>

@@ -29,24 +29,23 @@
               data-title="{{ $post->title }}" 
               data-excerpt="{{ Str::limit($post->content, 50) }}" 
               data-date="{{ $post->created_at->format('Y-m-d') }}" 
-              data-views="{{ $post->views }}">
+              data-views="{{ $post->view_count ?? 0 }}">
               <div class="content">
 								<h3>{{ $post->title }}</h3>
-								<p class="excerpt">{{ Str::limit($post->content, 50) }}</p>
+								<p class="excerpt">{{ Str::limit($post->excerpt ?? $post->content, 100) }}</p>
 								<div class="bottom">
 									<div class="tags">
-                    <span>design</span>
-                    <span>ui</span>
-                    <span>ux</span>
+                    @foreach($post->tags as $tag)
+                      <span>{{ $tag->name }}</span>
+                    @endforeach
                   </div>
 									<div class="actions">
-                    <button class="read-btn" data-id="1">Đọc</button>
-                    <button class="edit-btn" data-id="1" title="Sửa"><i class='bx bx-edit'></i></button>
-                    <button class="delete-btn" data-id="1" title="Xóa"><i class='bx bx-trash'></i></button>
+                    <a href="{{ route('admin.posts.show', $post->id) }}" class="read-btn">Xem</a>
+                    <a href="{{ route('admin.posts.edit', $post->id) }}" class="edit-btn" title="Sửa"><i class='bx bx-edit'></i></a>
+                    <button class="delete-btn" data-id="{{ $post->id }}" title="Xóa"><i class='bx bx-trash'></i></button>
                   </div>
 								</div>
 							</div>
-							{{-- <div class="post-full" style="display:none">Nội dung chi tiết về 10 nguyên tắc UI...</div> --}}
 						</article>
             @endforeach
 					</div>
