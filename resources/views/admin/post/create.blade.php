@@ -4,25 +4,14 @@
     <link rel="stylesheet" href="{{ asset('css/posts/create.css') }}">
 @endpush
 @section('content')
-    {{-- <div class="container">
-        <h1>Create New Post</h1>
-        <form action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" class="form-control" required>
-            </div>
-        </form>
-    </div> --}}
-    
-
      <div class="container form-blog-page">
         <div class="form-blog-header">
           <h1><i class='bx bx-pen'></i> Thêm bài viết mới</h1>
           <p>Tạo bài viết mới với tiêu đề, nội dung, hình ảnh, và tối ưu hóa SEO.</p>
         </div>
 
-        <form id="add-blog-form" class="form-blog-card">
+        <form id="add-blog-form" class="form-blog-card" action="{{ route('admin.posts.store') }}" method="POST" enctype="multipart/form-data">
+          @csrf
           <!-- Basic Info Section -->
           <div class="form-section">
             <div class="form-section-title"><i class='bx bx-info-circle'></i> Thông tin cơ bản</div>
@@ -39,13 +28,28 @@
 
             <div class="form-group">
               <label>Danh mục</label>
-              <select name="category">
+              <select name="category_id">
                 <option value="">-- Chọn danh mục --</option>
-                <option value="design">Design</option>
-                <option value="dev">Development</option>
-                <option value="marketing">Marketing</option>
-                <option value="business">Business</option>
-                <option value="other">Khác</option>
+                @foreach($categories as $category)
+                  <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Tags</label>
+              <select name="tags[]" multiple>
+                @foreach($tags as $tag)
+                  <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                @endforeach
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Trạng thái</label>
+              <select name="status" required>
+                <option value="draft">Draft (Nháp)</option>
+                <option value="published">Published (Công bố)</option>
               </select>
             </div>
           </div>
@@ -116,14 +120,9 @@
                   <input type="text" name="meta_title" placeholder="Tiêu đề SEO (55-60 ký tự)" maxlength="60" />
                 </div>
                 <div class="form-group">
-                  <label>Meta Keywords</label>
-                  <input type="text" name="meta_keywords" placeholder="từ khóa 1, từ khóa 2, từ khóa 3" />
+                  <label>Meta Description</label>
+                  <textarea name="meta_description" placeholder="Mô tả cho công cụ tìm kiếm (150-160 ký tự)" maxlength="160" style="min-height: 60px;"></textarea>
                 </div>
-              </div>
-
-              <div class="form-group full">
-                <label>Meta Description</label>
-                <textarea name="meta_description" placeholder="Mô tả cho công cụ tìm kiếm (150-160 ký tự)" maxlength="160" style="min-height: 60px;"></textarea>
               </div>
             </div>
           </div>
@@ -143,3 +142,7 @@
         </form>
       </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/posts/create.js') }}"></script>
+@endpush
