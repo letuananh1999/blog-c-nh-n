@@ -5,13 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
-use App\Http\Resources\PostResource;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Services\PostService;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Services\ApiResponseService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -23,7 +22,7 @@ class PostController extends Controller
     }
 
     /**
-     * Display a listing of posts with eager loading
+     * Display a listing of posts
      */
     public function index()
     {
@@ -40,9 +39,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('admin.post.create', compact('categories', 'tags'));
+        return view('admin.post.create', [
+            'categories' => Category::all(),
+            'tags' => Tag::all(),
+        ]);
     }
 
     /**
@@ -51,7 +51,8 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         try {
-            $post = $this->postService->create($request->validated());
+            $this->postService->create($request->validated());
+
             return redirect()->route('admin.posts.index')
                 ->with('success', '✓ Tạo bài viết thành công!');
         } catch (\Exception $e) {
@@ -66,7 +67,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post->load(['category', 'tags', 'user', 'comments']));
+        $post->load(['category', 'tags', 'user', 'comments']);
+
+        return view('admin.post.detail', compact('post'));
     }
 
     /**
@@ -74,9 +77,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $categories = Category::all();
-        $tags = Tag::all();
-        return view('admin.post.edit', compact('post', 'categories', 'tags'));
+        return view('admin.post.edit', [
+            'post' => $post,
+            'categories' => Category::all(),
+            'tags' => Tag::all(),
+        ]);
     }
 
     /**
@@ -85,10 +90,7 @@ class PostController extends Controller
     public function update(StorePostRequest $request, Post $post)
     {
         try {
-            $data = $request->validated();
-            $data['post'] = $post; // Pass post for comparison
-
-            $post = $this->postService->update($post, $data);
+            $this->postService->update($post, $request->validated());
 
             return redirect()->route('admin.posts.index')
                 ->with('success', '✓ Cập nhật bài viết thành công!');
@@ -100,22 +102,56 @@ class PostController extends Controller
     }
 
     /**
-     * Remove the specified post
+     * Delete the specified post (API Endpoint)
      */
     public function destroy(Post $post)
     {
         try {
+            if (!$this->authorizeDelete($post)) {
+                return ApiResponseService::unauthorized('❌ Bạn không có quyền xóa bài viết này!');
+            }
+
+            $this->logDeletion($post);
             $this->postService->delete($post);
 
-            return response()->json([
-                'message' => '✓ Xóa bài viết thành công!',
-                'status' => true
-            ], 200);
+            return ApiResponseService::success('✓ Xóa bài viết thành công!');
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => '❌ ' . $e->getMessage(),
-                'status' => false
-            ], 500);
+            return $this->handleDeletionError($post, $e);
         }
+    }
+
+    /**
+     * Check if user is authorized to delete post
+     */
+    private function authorizeDelete(Post $post): bool
+    {
+        return $post->user_id === Auth::id();
+    }
+
+    /**
+     * Log post deletion for audit trail
+     */
+    private function logDeletion(Post $post): void
+    {
+        Log::info('Post deleted', [
+            'post_id' => $post->id,
+            'user_id' => Auth::id(),
+            'post_title' => $post->title,
+            'timestamp' => now()
+        ]);
+    }
+
+    /**
+     * Handle deletion error
+     */
+    private function handleDeletionError(Post $post, \Exception $e)
+    {
+        Log::error('Post deletion failed', [
+            'post_id' => $post->id,
+            'user_id' => Auth::id(),
+            'error' => $e->getMessage()
+        ]);
+
+        return ApiResponseService::serverError('❌ Có lỗi xảy ra khi xóa bài viết!');
     }
 }
