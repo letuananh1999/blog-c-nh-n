@@ -2,13 +2,13 @@
 
 ## 🎯 Nhanh Gọn - Khác Nhau Gì?
 
-| Aspect | ApiResponseService | Api/PostController |
-|--------|-------------------|-------------------|
-| **Loại** | Service (Logic) | Controller (HTTP) |
-| **Mục Đích** | Format JSON response | Handle API requests |
-| **Scope** | Dùng ở nhiều controllers | Chỉ xử lý Post API |
-| **Reusable** | ✅ 100% reusable | ❌ Specific to Posts |
-| **Nằm Ở** | `app/Services/` | `app/Http/Controllers/Api/` |
+| Aspect       | ApiResponseService       | Api/PostController          |
+| ------------ | ------------------------ | --------------------------- |
+| **Loại**     | Service (Logic)          | Controller (HTTP)           |
+| **Mục Đích** | Format JSON response     | Handle API requests         |
+| **Scope**    | Dùng ở nhiều controllers | Chỉ xử lý Post API          |
+| **Reusable** | ✅ 100% reusable         | ❌ Specific to Posts        |
+| **Nằm Ở**    | `app/Services/`          | `app/Http/Controllers/Api/` |
 
 ---
 
@@ -17,17 +17,20 @@
 ### 1️⃣ ApiResponseService
 
 #### 📖 Định Nghĩa
+
 **Service class** - Tập hợp các static methods để tạo **standardized JSON responses**.
 
 #### 💾 Vị Trí
+
 ```
 app/Services/ApiResponseService.php
 ```
 
 #### 🎯 Mục Đích
-- Cung cấp **consistent response format** cho tất cả API endpoints
-- Định nghĩa cách trả về success/error/unauthorized/etc
-- **Reusable** ở mọi controller
+
+-   Cung cấp **consistent response format** cho tất cả API endpoints
+-   Định nghĩa cách trả về success/error/unauthorized/etc
+-   **Reusable** ở mọi controller
 
 #### 📝 Chứa Gì?
 
@@ -35,7 +38,7 @@ app/Services/ApiResponseService.php
 class ApiResponseService
 {
     // 6 static methods - không cần instantiate
-    
+
     public static function success($message, $data, $statusCode)
     public static function error($message, $data, $statusCode)
     public static function unauthorized($message)
@@ -65,33 +68,39 @@ return ApiResponseService::unauthorized('No permission!');
 ```
 
 #### 🛠️ Xây Dựng Lên
-- **Base layers:** Response logic
+
+-   **Base layers:** Response logic
 
 #### 🏗️ Phụ Thuộc Vào
-- Không phụ thuộc gì cả (pure logic)
+
+-   Không phụ thuộc gì cả (pure logic)
 
 #### ✅ Lợi Ích
-- ✅ DRY - Không copy-paste response code
-- ✅ Consistent - Format giống nhau ở mọi API
-- ✅ Easy to maintain - Fix 1 chỗ
-- ✅ Scalable - Thêm method cho response type mới dễ
+
+-   ✅ DRY - Không copy-paste response code
+-   ✅ Consistent - Format giống nhau ở mọi API
+-   ✅ Easy to maintain - Fix 1 chỗ
+-   ✅ Scalable - Thêm method cho response type mới dễ
 
 ---
 
 ### 2️⃣ Api/PostController
 
 #### 📖 Định Nghĩa
+
 **API Controller** - Xử lý HTTP requests và trả responses cho Post API endpoints.
 
 #### 💾 Vị Trí
+
 ```
 app/Http/Controllers/Api/PostController.php
 ```
 
 #### 🎯 Mục Đích
-- Nhận POST/GET/PUT/DELETE requests từ mobile app/client
-- Xử lý business logic (delegate to PostService)
-- Trả về JSON response
+
+-   Nhận POST/GET/PUT/DELETE requests từ mobile app/client
+-   Xử lý business logic (delegate to PostService)
+-   Trả về JSON response
 
 #### 📝 Chứa Gì?
 
@@ -100,7 +109,7 @@ class PostController extends Controller
 {
     // Depends on PostService
     private PostService $postService;
-    
+
     // 7 public methods (API endpoints)
     public function index()       // GET /api/posts
     public function show()        // GET /api/posts/{id}
@@ -108,7 +117,7 @@ class PostController extends Controller
     public function update()      // PUT /api/posts/{id}
     public function destroy()     // DELETE /api/posts/{id}
     public function search()      // GET /api/posts/search
-    
+
     // 4 private helper methods
     private function authorizeUpdate()
     private function authorizeDelete()
@@ -138,20 +147,23 @@ curl GET https://example.com/api/posts
 ```
 
 #### 🛠️ Xây Dựng Lên
-- Dùng **ApiResponseService** để trả response
-- Dùng **PostService** để xử lý logic
-- Dùng **StorePostRequest** để validate
+
+-   Dùng **ApiResponseService** để trả response
+-   Dùng **PostService** để xử lý logic
+-   Dùng **StorePostRequest** để validate
 
 #### 🏗️ Phụ Thuộc Vào
-- PostService (inject)
-- ApiResponseService (use)
-- StorePostRequest (validate)
-- Eloquent Model (Post)
+
+-   PostService (inject)
+-   ApiResponseService (use)
+-   StorePostRequest (validate)
+-   Eloquent Model (Post)
 
 #### ✅ Lợi Ích
-- ✅ Focused - Chỉ xử lý API requests
-- ✅ Separated - Riêng biệt với Web admin controller
-- ✅ Extensible - Dễ thêm endpoints
+
+-   ✅ Focused - Chỉ xử lý API requests
+-   ✅ Separated - Riêng biệt với Web admin controller
+-   ✅ Extensible - Dễ thêm endpoints
 
 ---
 
@@ -229,11 +241,13 @@ JSON Response to Client
 ### Example 1: List Posts
 
 **Request:**
+
 ```bash
 GET /api/posts HTTP/1.1
 ```
 
 **Api/PostController::index()**
+
 ```php
 public function index()
 {
@@ -256,6 +270,7 @@ public function index()
 ```
 
 **ApiResponseService::success() tạo ra:**
+
 ```json
 {
   "status": true,
@@ -279,12 +294,14 @@ public function index()
 ### Example 2: Delete Post
 
 **Request:**
+
 ```bash
 DELETE /api/posts/5 HTTP/1.1
 Authorization: Bearer {token}
 ```
 
 **Api/PostController::destroy()**
+
 ```php
 public function destroy(Post $post)
 {
@@ -315,11 +332,12 @@ public function destroy(Post $post)
 ```
 
 **ApiResponseService::success() tạo ra:**
+
 ```json
 {
-  "status": true,
-  "message": "✓ Bài viết đã được xóa thành công!",
-  "data": null
+    "status": true,
+    "message": "✓ Bài viết đã được xóa thành công!",
+    "data": null
 }
 ```
 
@@ -330,6 +348,7 @@ public function destroy(Post $post)
 ### 🏢 Typical Enterprise Pattern
 
 **Folder Structure:**
+
 ```
 app/Http/Controllers/
 ├── Api/
@@ -345,6 +364,7 @@ app/Http/Controllers/
 ```
 
 **File Structure:**
+
 ```
 app/
 ├── Http/
@@ -362,6 +382,7 @@ app/
 ### 🛠️ Enterprise Best Practices
 
 #### 1. **Versioning**
+
 ```php
 // routes/api.php
 Route::prefix('v1')->group(function() {
@@ -374,12 +395,14 @@ Route::prefix('v2')->group(function() {
 ```
 
 #### 2. **Consistent Response Format**
+
 ```php
 // Every API endpoint uses ApiResponseService
 // This ensures consistency across entire API
 ```
 
 #### 3. **Resource Transformation**
+
 ```php
 // Api/PostController
 public function show(Post $post)
@@ -392,6 +415,7 @@ public function show(Post $post)
 ```
 
 #### 4. **Error Handling**
+
 ```php
 // ApiResponseService handles all error types
 return ApiResponseService::validationError($errors);  // 422
@@ -401,6 +425,7 @@ return ApiResponseService::serverError('Server error');  // 500
 ```
 
 #### 5. **Rate Limiting & Throttling**
+
 ```php
 // routes/api.php
 Route::middleware('throttle:60,1')->group(function() {
@@ -410,6 +435,7 @@ Route::middleware('throttle:60,1')->group(function() {
 ```
 
 #### 6. **Authentication**
+
 ```php
 // routes/api.php
 Route::middleware('auth:sanctum')->group(function() {
@@ -436,10 +462,10 @@ Api\PostController::index()
 {
     // 1. Fetch data
     $posts = Post::paginate();
-    
+
     // 2. Transform with Resource
     $transformed = PostResource::collection($posts);
-    
+
     // 3. Return using ApiResponseService
     return ApiResponseService::success(
         'Posts retrieved',
@@ -476,6 +502,7 @@ Mobile App receives:
 ## 🎓 KEY CONCEPTS
 
 ### Separation of Concerns
+
 ```
 ApiResponseService     → Response formatting
 Api/PostController     → HTTP handling
@@ -484,6 +511,7 @@ Post Model             → Data access
 ```
 
 ### Single Responsibility
+
 ```
 ApiResponseService: Only format responses
 Api/PostController: Only handle HTTP
@@ -491,6 +519,7 @@ PostService: Only process business logic
 ```
 
 ### DRY Principle
+
 ```
 Without ApiResponseService:
 ├── CategoryController has response logic
@@ -512,6 +541,7 @@ Total: 1x shared code
 ### Adding New Endpoint (Enterprise Way)
 
 **Without proper structure:**
+
 ```php
 // Add new CategoryController
 public function index()
@@ -527,6 +557,7 @@ public function index()
 ```
 
 **With proper structure:**
+
 ```php
 // Add new Api/CategoryController
 public function index()
@@ -544,17 +575,17 @@ public function index()
 
 ## 🎯 SUMMARY TABLE
 
-| Feature | ApiResponseService | Api/PostController |
-|---------|-------------------|-------------------|
-| **Type** | Service | Controller |
-| **Purpose** | Response formatting | Request handling |
-| **Reusable** | Yes (all APIs) | No (posts only) |
-| **Static** | Yes | No |
-| **Dependencies** | None | PostService, StorePostRequest |
-| **Used By** | All controllers | Clients via HTTP |
-| **Change Frequency** | Rarely | Often (new endpoints) |
-| **Testing** | Easy (no dependencies) | Medium (needs mocks) |
-| **Location** | app/Services/ | app/Http/Controllers/Api/ |
+| Feature              | ApiResponseService     | Api/PostController            |
+| -------------------- | ---------------------- | ----------------------------- |
+| **Type**             | Service                | Controller                    |
+| **Purpose**          | Response formatting    | Request handling              |
+| **Reusable**         | Yes (all APIs)         | No (posts only)               |
+| **Static**           | Yes                    | No                            |
+| **Dependencies**     | None                   | PostService, StorePostRequest |
+| **Used By**          | All controllers        | Clients via HTTP              |
+| **Change Frequency** | Rarely                 | Often (new endpoints)         |
+| **Testing**          | Easy (no dependencies) | Medium (needs mocks)          |
+| **Location**         | app/Services/          | app/Http/Controllers/Api/     |
 
 ---
 
@@ -569,6 +600,6 @@ public function index()
 ✅ **Rate Limiting** - Prevent abuse  
 ✅ **Logging** - Audit trails for security  
 ✅ **Resource Transformation** - Use Resources/DTOs  
-✅ **Documentation** - API docs (Swagger/OpenAPI)  
+✅ **Documentation** - API docs (Swagger/OpenAPI)
 
 **This is how professional dev teams build scalable APIs!** 🚀

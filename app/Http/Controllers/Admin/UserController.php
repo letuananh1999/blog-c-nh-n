@@ -5,18 +5,25 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserController extends Controller
 {
+    protected UserService $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'asc')
-            ->paginate(10);
-        //              
-        // ->get();
+        $status = $request->query('status', 'all');
+        $users = $this->userService->getUsers($status, 10);
+
         return view('admin.user.index', compact('users'));
     }
 
@@ -33,7 +40,26 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // Validate dữ liệu
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:8',
+                'role' => 'required|in:User,Editor,Admin',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'email_verified' => 'nullable|boolean',
+            ]);
+
+            // Sử dụng service để tạo user
+            $this->userService->create($validated);
+
+            return redirect()->route('admin.users.index')
+                ->with('success', 'User thêm thành công');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     /**
@@ -41,7 +67,8 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.user.show', compact('user'));
     }
 
     /**
@@ -49,7 +76,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('admin.user.edit', compact('user'));
     }
 
     /**
@@ -57,7 +85,44 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+
+            // Validate dữ liệu
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email,' . $id,
+                'password' => 'nullable|string|min:8',
+                'role' => 'required|in:User,Editor,Admin',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'email_verified' => 'nullable|boolean',
+            ]);
+
+            // Sử dụng service để cập nhật
+            $this->userService->update($user, $validated);
+
+            return redirect()->route('admin.users.index')
+                ->with('success', 'User cập nhật thành công');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Toggle user status (khóa/mở khóa)
+     */
+    public function toggleStatus(string $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $this->userService->toggleStatus($user);
+
+            $status = $user->status === 'blocked' ? 'Đã khóa' : 'Đã mở khóa';
+            return back()->with('success', "User $status thành công");
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -65,6 +130,20 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $user = User::findOrFail($id);
+
+            // Không cho xóa admin user
+            if ($user->role === 'Admin') {
+                return back()->with('error', 'Không thể xóa user có vai trò Admin');
+            }
+
+            $this->userService->delete($user);
+
+            return redirect()->route('admin.users.index')
+                ->with('success', 'User xóa thành công');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
     }
 }

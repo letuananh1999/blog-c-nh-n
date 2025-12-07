@@ -29,6 +29,8 @@ Route::prefix('admin')
         Route::resource('categories', CategoryController::class);
         Route::resource('posts', PostController::class);
         Route::resource('users', UserController::class);
+        Route::patch('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])
+          ->name('users.toggleStatus');
         Route::resource('comments', CommentController::class);
       });
   });

@@ -16,10 +16,18 @@ class CheckRole
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        if (! in_array(Auth::user()->role, $roles)) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+        // Kiểm tra xem user đã đăng nhập chưa
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized - Not logged in'], 401);
         }
 
+        // Kiểm tra role (không phân biệt chữ hoa/thường)
+        $userRole = strtolower(Auth::user()->role);
+        $roles = array_map('strtolower', $roles);
+
+        if (! in_array($userRole, $roles)) {
+            return response()->json(['message' => 'Unauthorized - Insufficient permissions. Your role: ' . Auth::user()->role], 403);
+        }
 
         return $next($request);
     }
