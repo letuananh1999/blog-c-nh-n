@@ -18,19 +18,14 @@ class AuthController extends Controller
     // Xử lý đăng nhập
     public function login(LoginRequest $request)
     {
-        // $request->validate([
-        //     'email' => 'required|email',
-        //     'password' => 'required'
-        // ]);
-
-        // $credentials = $request->only('email', 'password');
-
         // Kiểm tra đăng nhập
+        $remember = $request->filled('remember'); // Lấy giá trị checkbox "Remember Me"
+
         if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
-            'role' => 'admin' // chỉ cho admin đăng nhập vào trang này
-        ])) {
+            'role' => 'Admin' // chỉ cho admin đăng nhập vào trang này
+        ], $remember)) {
             $request->session()->regenerate();
             return redirect()->route('admin.index');
         }

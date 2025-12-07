@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\PostController;
  * Public API Routes
  */
 Route::get('/test', function () {
-    return response()->json(['message' => 'API hoạt động!']);
+  return response()->json(['message' => 'API hoạt động!']);
 });
 
 // Auth endpoints
@@ -23,8 +23,8 @@ Route::get('/posts/search', [PostController::class, 'search']);
  * Protected API Routes (require authentication)
  */
 Route::middleware('auth:sanctum')->group(function () {
-    // Post management (Admin only)
-    Route::post('/posts', [PostController::class, 'store']);
-    Route::put('/posts/{post}', [PostController::class, 'update']);
-    Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+  // Post management (Admin only)
+  Route::post('/posts', [PostController::class, 'store']);
+  Route::put('/posts/{post}', [PostController::class, 'update']);
+  Route::delete('/posts/{post}', [PostController::class, 'destroy']);
 });

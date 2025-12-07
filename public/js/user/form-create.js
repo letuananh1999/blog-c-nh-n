@@ -1,63 +1,75 @@
-	// Enhance: password toggle, avatar preview & removal, and demo submit
-		document.addEventListener('DOMContentLoaded', ()=>{
-			// password toggle
-			const pw = document.getElementById('u-password');
-			const toggle = document.getElementById('pw-toggle');
-			if(toggle && pw){
-				toggle.addEventListener('click', ()=>{
-					pw.type = pw.type === 'password' ? 'text' : 'password';
-					const icon = toggle.querySelector('i');
-					icon.classList.toggle('bx-low-vision');
-					icon.classList.toggle('bx-show');
-				});
-			}
+/**
+ * Avatar upload handler
+ * - Preview hình khi chọn
+ * - Xóa hình đã chọn
+ */
 
-			// avatar preview
-			const avatarInput = document.getElementById('u-avatar');
-			const previewWrap = document.getElementById('avatarPreview');
-			const removeBtn = document.getElementById('remove-avatar');
+document.addEventListener('DOMContentLoaded', function() {
+    const avatarInput = document.getElementById('u-avatar');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const removeAvatarBtn = document.getElementById('remove-avatar');
 
-			function showPreview(file){
-				if(!file) return;
-				const img = document.createElement('img');
-				img.alt = 'avatar';
-				img.src = URL.createObjectURL(file);
-				// clear
-				previewWrap.innerHTML = '';
-				previewWrap.appendChild(img);
-			}
+    if (!avatarInput || !avatarPreview || !removeAvatarBtn) {
+        console.warn('Avatar form elements not found');
+        return;
+    }
 
-			avatarInput.addEventListener('change', (e)=>{
-				const f = e.target.files && e.target.files[0];
-				if(!f) return;
-				if(!f.type.startsWith('image/')){
-					alert('Vui lòng chọn tệp hình ảnh.');
-					return;
-				}
-				showPreview(f);
-			});
+    /**
+     * Xử lý khi người dùng chọn ảnh
+     */
+    avatarInput.addEventListener('change', function(e) {
+        const file = this.files[0];
 
-			removeBtn.addEventListener('click', ()=>{
-				avatarInput.value = '';
-				previewWrap.innerHTML = '<div class="avatar-placeholder">Ảnh đại diện<br><small>(png, jpg)</small></div>';
-			});
+        if (!file) return;
 
-			// submit (demo)
-			document.getElementById('add-user-form').addEventListener('submit', function(e){
-				e.preventDefault();
-				const form = new FormData(this);
-				// build a demo summary
-				const summary = {
-					name: form.get('name'),
-					email: form.get('email'),
-					role: form.get('role'),
-					avatar: avatarInput.files && avatarInput.files[0] ? avatarInput.files[0].name : null
-				};
-				alert('Demo: user đã được thêm (không lưu thực tế)\n' + JSON.stringify(summary, null, 2));
-				this.reset();
-				removeBtn.click();
-			});
+        // Kiểm tra loại file
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Vui lòng chọn file ảnh hợp lệ (jpeg, png, jpg, gif)');
+            this.value = '';
+            return;
+        }
 
-			// cancel
-			document.getElementById('cancel').addEventListener('click', ()=>{ document.getElementById('add-user-form').reset(); removeBtn.click(); });
-		});
+        // Kiểm tra kích thước (max 2MB)
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        if (file.size > maxSize) {
+            alert('Kích thước ảnh không được vượt quá 2MB');
+            this.value = '';
+            return;
+        }
+
+        // Hiển thị preview
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            avatarPreview.innerHTML = `
+                <img src="${event.target.result}" 
+                     alt="Avatar preview" 
+                     style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+            `;
+        };
+        reader.readAsDataURL(file);
+    });
+
+    /**
+     * Xóa ảnh đã chọn
+     */
+    removeAvatarBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        avatarInput.value = '';
+        
+        // Khôi phục placeholder
+        if (document.querySelector('.avatar-placeholder')) {
+            // Nếu là form create
+            avatarPreview.innerHTML = `
+                <div class="avatar-placeholder">Ảnh đại diện<br><small>(png, jpg)</small></div>
+            `;
+        } else {
+            // Nếu là form edit, khôi phục hình cũ hoặc placeholder
+            const firstLetter = document.getElementById('u-name')?.value?.charAt(0)?.toUpperCase() || 'A';
+            avatarPreview.innerHTML = `
+                <div class="avatar-placeholder">${firstLetter}</div>
+            `;
+        }
+    });
+});

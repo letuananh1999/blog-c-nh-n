@@ -17,10 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('api.')
                 ->group(base_path('routes/api.php'));
             // API dành cho admin
-            Route::middleware(['api', 'auth:admin'])
-                ->prefix('api/admin')
-                ->name('api.admin.')
-                ->group(base_path('routes/admin.api.php'));
+            // Route::middleware(['api', 'auth:admin'])
+            //     ->prefix('api/admin')
+            //     ->name('api.admin.')
+            //     ->group(base_path('routes/admin.api.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
