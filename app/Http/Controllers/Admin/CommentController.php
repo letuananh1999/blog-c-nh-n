@@ -171,7 +171,7 @@ class CommentController extends Controller
 
             $this->commentService->delete($comment);
 
-            return back()->with('success', 'Xóa bình luận thành công!');
+            return redirect()->route('admin.comments.index')->with('success', 'Xóa bình luận thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Lỗi xóa: ' . $e->getMessage());
         }
