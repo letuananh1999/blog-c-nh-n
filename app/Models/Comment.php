@@ -16,8 +16,13 @@ class Comment extends Model
         'author_email',
         'content',
         'parent_id',
+        'is_approved',
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'is_approved' => 'boolean',
     ];
     public function post()
     {

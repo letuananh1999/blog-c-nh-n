@@ -32,5 +32,13 @@ Route::prefix('admin')
         Route::patch('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])
           ->name('users.toggleStatus');
         Route::resource('comments', CommentController::class);
+
+        // Comment custom routes
+        Route::patch('/comments/{id}/approve', [CommentController::class, 'approve'])
+          ->name('comments.approve');
+        Route::patch('/comments/{id}/unapprove', [CommentController::class, 'unapprove'])
+          ->name('comments.unapprove');
+        Route::post('/comments/{id}/reply', [CommentController::class, 'reply'])
+          ->name('comments.reply');
       });
   });
