@@ -87,11 +87,6 @@
 													</form>
 												@endif
 
-												{{-- Nút Trả lời (chỉ cho comment gốc, không phải reply) --}}
-												@if(!$comment->parent_id)
-													<button class="action-btn" onclick="openReplyModal({{ $comment->id }}, '{{ $comment->author_name }}')">↩ Trả lời</button>
-												@endif
-
 												{{-- Nút Xem chi tiết --}}
 												<a href="{{ route('admin.comments.show', $comment->id) }}" class="action-btn">👁 Xem</a>
 

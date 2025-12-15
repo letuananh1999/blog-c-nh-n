@@ -1,5 +1,8 @@
 @extends('layouts.dashboard')
 @section('title', 'Chi tiết bình luận')
+@push('styles')
+		<link rel="stylesheet" href="{{ asset('css/comment/show.css') }}">	
+@endpush
 @section('content')
     <div class="containerr">
         <section class="comment-detail-wrap">
@@ -99,7 +102,7 @@
                         <button class="btn" onclick="document.getElementById('reply-section').style.display = 'block'">↩ Trả lời</button>
                     @endif
 
-                    <a href="{{ route('admin.comments.edit', $comment->id) }}" class="btn">✏ Sửa</a>
+                    {{-- <a href="{{ route('admin.comments.edit', $comment->id) }}" class="btn">✏ Sửa</a> --}}
 
                     <form action="{{ route('admin.comments.destroy', $comment->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Bạn chắc chắn muốn xóa?');">
                         @csrf @method('DELETE')
