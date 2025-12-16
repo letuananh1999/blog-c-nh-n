@@ -19,6 +19,7 @@ class Comment extends Model
         'is_approved',
         'created_at',
         'updated_at',
+        'version',
     ];
 
     protected $casts = [

@@ -58,11 +58,23 @@ class CategoryController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'version' => 'required|integer',
         ]);
 
         try {
             $category = Category::findOrFail($id);
+
+            // Kiểm tra version (Optimistic Locking)
+            if ($category->version != $validated['version']) {
+                return response()->json([
+                    'message' => 'Danh mục này đã được sửa bởi ai đó. Vui lòng tải lại trang!',
+                    'status' => false
+                ], 409);
+            }
+
+            $validated['version'] = $category->version + 1;
             $category->update($validated);
+
             return response()->json([
                 'message' => 'Category updated successfully',
                 'status' => true

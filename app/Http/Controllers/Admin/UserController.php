@@ -96,6 +96,7 @@ class UserController extends Controller
                 'role' => 'required|in:User,Editor,Admin',
                 'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
                 'email_verified' => 'nullable|boolean',
+                'version' => 'sometimes|integer|min:0',
             ]);
 
             // Sử dụng service để cập nhật

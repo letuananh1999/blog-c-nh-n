@@ -17,6 +17,7 @@ class Category extends Model
         'description',
         'created_at',
         'updated_at',
+        'version',
     ];
 
     protected static function boot()
