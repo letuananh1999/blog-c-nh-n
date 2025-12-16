@@ -56,10 +56,16 @@ class UserService
   public function update(User $user, array $data): User
   {
     try {
+      // Kiểm tra version (Optimistic Locking)
+      if (isset($data['version']) && $user->version != $data['version']) {
+        throw new \Exception('Người dùng này đã được sửa bởi ai đó. Vui lòng tải lại trang!');
+      }
+
       $updateData = [
         'name' => $data['name'] ?? $user->name,
         'email' => $data['email'] ?? $user->email,
         'role' => $data['role'] ?? $user->role,
+        'version' => $user->version + 1,  // Tăng version
       ];
 
       // Xử lý mật khẩu nếu có

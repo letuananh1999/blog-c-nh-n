@@ -86,6 +86,11 @@ class CommentService
   public function update(Comment $comment, array $data): Comment
   {
     try {
+      // Kiểm tra version (Optimistic Locking)
+      if (isset($data['version']) && $comment->version != $data['version']) {
+        throw new \Exception('Bình luận này đã được sửa bởi ai đó. Vui lòng tải lại trang!');
+      }
+
       $updateData = [];
 
       if (isset($data['content'])) {
@@ -99,6 +104,8 @@ class CommentService
       if (isset($data['author_email'])) {
         $updateData['author_email'] = $data['author_email'];
       }
+
+      $updateData['version'] = $comment->version + 1;  // Tăng version
 
       $comment->update($updateData);
 

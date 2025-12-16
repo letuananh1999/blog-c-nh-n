@@ -40,8 +40,14 @@ class PostService
   public function update(Post $post, array $data): Post
   {
     try {
+      // Kiểm tra version (Optimistic Locking)
+      if (isset($data['version']) && $post->version != $data['version']) {
+        throw new \Exception('Bài viết này đã được sửa bởi ai đó. Vui lòng tải lại trang!');
+      }
+
       $postData = $this->prepareThumbnail($data, $post);
       $postData = $this->preparePostData($data, $post, $postData);
+      $postData['version'] = $post->version + 1;  // Tăng version
 
       $post->update($postData);
       $this->syncTags($post, $data['tags'] ?? []);

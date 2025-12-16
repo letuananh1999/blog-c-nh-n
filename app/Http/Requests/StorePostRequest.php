@@ -40,6 +40,7 @@ class StorePostRequest extends FormRequest
             'tags.*'      => 'exists:tags,id',
             'created_at'  => 'sometimes|date',
             'updated_at'  => 'sometimes|date',
+            'version'     => 'sometimes|integer|min:0',
         ];
     }
 

@@ -25,6 +25,7 @@ class Post extends Model
         'published_at',
         'created_at',
         'updated_at',
+        'version',
     ];
     public function category()
     {
