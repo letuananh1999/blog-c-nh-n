@@ -59,6 +59,59 @@ class PostService
   }
 
   /**
+   * Get all posts with pagination
+   */
+  public function getAll($paginate = true)
+  {
+    try {
+      $query = Post::with(['category', 'tags', 'user'])
+        ->withCount('comments')
+        ->orderBy('created_at', 'desc');
+
+      return $paginate ? $query->paginate(config('blog.post.per_page')) : $query->get();
+    } catch (\Exception $e) {
+      throw new \Exception('Failed to fetch posts: ' . $e->getMessage());
+    }
+  }
+
+  /**
+   * Get single post by ID
+   */
+  public function getById(int $id): Post
+  {
+    try {
+      return Post::with(['category', 'tags', 'user', 'comments'])
+        ->findOrFail($id);
+    } catch (\Exception $e) {
+      throw new \Exception('Post not found: ' . $e->getMessage());
+    }
+  }
+
+  /**
+   * Search posts by title or content
+   */
+  public function search(string $query)
+  {
+    try {
+      if (strlen($query) < 2) {
+        throw new \Exception('Query phải ít nhất 2 ký tự!');
+      }
+
+      return Post::where('status', 'published')
+        ->where(function ($q) use ($query) {
+          $q->where('title', 'like', "%{$query}%")
+            ->orWhere('content', 'like', "%{$query}%");
+        })
+        ->with(['category', 'tags', 'user'])
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get();
+    } catch (\Exception $e) {
+      throw new \Exception('Search failed: ' . $e->getMessage());
+    }
+  }
+
+  /**
    * Delete a post with cleanup
    */
   public function delete(Post $post): bool

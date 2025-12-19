@@ -25,10 +25,7 @@ class PostController extends Controller
   public function index()
   {
     try {
-      $posts = Post::with(['category', 'tags', 'user'])
-        ->withCount('comments')
-        ->orderBy('created_at', 'desc')
-        ->paginate(config('blog.post.per_page'));
+      $posts = $this->postService->getAll();
 
       return ApiResponseService::success(
         'Posts retrieved successfully',
@@ -46,7 +43,7 @@ class PostController extends Controller
   public function show(Post $post)
   {
     try {
-      $post->load(['category', 'tags', 'user', 'comments']);
+      $post = $this->postService->getById($post->id);
 
       return ApiResponseService::success(
         'Post retrieved successfully',
@@ -125,20 +122,7 @@ class PostController extends Controller
   {
     try {
       $query = request()->get('q', '');
-
-      if (strlen($query) < 2) {
-        return ApiResponseService::error('Query phải ít nhất 2 ký tự!', null, 422);
-      }
-
-      $posts = Post::where('status', 'published')
-        ->where(function ($q) use ($query) {
-          $q->where('title', 'like', "%{$query}%")
-            ->orWhere('content', 'like', "%{$query}%");
-        })
-        ->with(['category', 'tags', 'user'])
-        ->orderBy('created_at', 'desc')
-        ->limit(10)
-        ->get();
+      $posts = $this->postService->search($query);
 
       return ApiResponseService::success(
         'Search results',
@@ -146,7 +130,7 @@ class PostController extends Controller
       );
     } catch (\Exception $e) {
       Log::error('Search failed', ['error' => $e->getMessage()]);
-      return ApiResponseService::serverError();
+      return ApiResponseService::error($e->getMessage(), null, 422);
     }
   }
 
