@@ -7,19 +7,27 @@
       <div class="containerr categories-page">
         <div class="cat-head head-title" role="banner" aria-label="Danh mục header">
           <div class="cat-head-left left">
-            <h1 class="cat-title">Danh sách danh mục</h1>
-            <p class="cat-desc">
-              Quản lý các danh mục bài viết của bạn — thêm, sửa, xóa và xem số lượng bài trong từng mục.
-            </p>
+            @if(request('q'))
+              <h1 class="cat-title">Kết quả tìm kiếm: "{{ request('q') }}"</h1>
+              <p class="cat-desc">
+                <a href="{{ route('admin.categories.index') }}" style="color: #007bff;">← Quay lại danh sách</a>
+              </p>
+            @else
+              <h1 class="cat-title">Danh sách danh mục</h1>
+              <p class="cat-desc">
+                Quản lý các danh mục bài viết của bạn — thêm, sửa, xóa và xem số lượng bài trong từng mục.
+              </p>
+            @endif
           </div>
 
           <div class="cat-actions" role="region" aria-label="Công cụ danh mục">
-            <div class="form-input search-box" role="search" aria-label="Tìm danh mục">
-              <input id="cate-search" type="search" placeholder="Tìm danh mục..." aria-label="Tìm danh mục" />
-              <button id="cate-search-btn" class="search-btn" aria-label="Tìm">
+            <form method="GET" action="{{ route('admin.categories.search') }}" class="form-input search-box" role="search" aria-label="Tìm danh mục">
+              @csrf
+              <input id="cate-search" type="search" name="q" placeholder="Tìm danh mục..." aria-label="Tìm danh mục" value="{{ request('q') }}" />
+              <button type="submit" id="cate-search-btn" class="search-btn" aria-label="Tìm">
                 <i class='bx bx-search' aria-hidden="true"></i>
               </button>
-            </div>
+            </form>
 
             <button id="add-cat" class="btn primary add-cat-btn" aria-label="Thêm danh mục">+ Thêm danh mục</button>
           </div>
