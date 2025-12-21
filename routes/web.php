@@ -26,6 +26,7 @@ Route::prefix('admin')
           return view('admin.index');
         })->name('index');
 
+        Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
         Route::resource('categories', CategoryController::class);
         Route::resource('posts', PostController::class);
         Route::resource('users', UserController::class);

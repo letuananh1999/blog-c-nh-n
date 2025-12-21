@@ -4,17 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
+    private CategoryService $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     public function index()
     {
         // Hiển thị danh sách danh mục
-        $categories = Category::withCount('posts')
-            ->orderBy('sort', 'asc')
-            ->paginate(10);
+        $categories = $this->categoryService->getAll();
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -33,7 +38,7 @@ class CategoryController extends Controller
         ]);
 
         try {
-            Category::create($validated);
+            $this->categoryService->create($validated);
             return response()->json([
                 'message' => 'Category created successfully',
                 'status' => true
@@ -63,17 +68,7 @@ class CategoryController extends Controller
 
         try {
             $category = Category::findOrFail($id);
-
-            // Kiểm tra version (Optimistic Locking)
-            if ($category->version != $validated['version']) {
-                return response()->json([
-                    'message' => 'Danh mục này đã được sửa bởi ai đó. Vui lòng tải lại trang!',
-                    'status' => false
-                ], 409);
-            }
-
-            $validated['version'] = $category->version + 1;
-            $category->update($validated);
+            $this->categoryService->update($category, $validated);
 
             return response()->json([
                 'message' => 'Category updated successfully',
@@ -92,7 +87,7 @@ class CategoryController extends Controller
         // Xử lý xóa danh mục
         try {
             $category = Category::findOrFail($id);
-            $category->delete();
+            $this->categoryService->delete($category);
             return response()->json([
                 'message' => 'Category deleted successfully',
                 'status' => true
@@ -103,5 +98,31 @@ class CategoryController extends Controller
                 'status' => false
             ], 500);
         }
+    }
+
+    public function search(Request $request)
+    {
+        // Tìm kiếm danh mục
+        try {
+            $query = $request->get('q', '');
+
+            if (strlen($query) < 1) {
+                return redirect()->route('admin.categories.index');
+            }
+
+            $categories = $this->categoryService->search($query);
+
+            return view('admin.categories.index', compact('categories'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.categories.index')
+                ->with('error', $e->getMessage());
+        }
+    }
+
+    public function show($id)
+    {
+        // Hiển thị chi tiết danh mục
+        $category = Category::withCount('posts')->findOrFail($id);
+        return view('admin.categories.show', compact('category'));
     }
 }

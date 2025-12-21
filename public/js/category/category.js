@@ -192,4 +192,70 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!td.hasAttribute('data-label')) td.setAttribute('data-label', headers[i] || '');
     });
   });
+
+  // ===== SEARCH: Tìm kiếm danh mục =====
+  // const searchInput = document.getElementById('cate-search');
+  // const searchBtn = document.getElementById('cate-search-btn');
+  // const tbody = document.querySelector('#cat-table tbody');
+
+  // if (searchInput && searchBtn && tbody) {
+  //   const performSearch = async () => {
+  //     const query = searchInput.value.trim();
+
+  //     if (query.length === 0) {
+  //       location.reload(); // Reload để hiển thị tất cả
+  //       return;
+  //     }
+
+  //     try {
+  //       const response = await fetch(`/admin/categories/search?q=${encodeURIComponent(query)}`);
+  //       const data = await response.json();
+
+  //       if (!data.status) {
+  //         alert('⚠️ ' + data.message);
+  //         return;
+  //       }
+
+  //       // Clear bảng hiện tại
+  //       tbody.innerHTML = '';
+
+  //       // Render kết quả search
+  //       if (data.data && data.data.length > 0) {
+  //         data.data.forEach(category => {
+  //           const row = document.createElement('tr');
+  //           row.dataset.id = category.id;
+  //           row.innerHTML = `
+  //             <td data-label="ID">${category.id}</td>
+  //             <td data-label="Tên danh mục">${category.name}</td>
+  //             <td data-label="Mô tả">${category.description || ''}</td>
+  //             <td data-label="Số bài">${category.posts_count}</td>
+  //             <td data-label="Ngày tạo">${new Date(category.created_at).toLocaleDateString('vi-VN')}</td>
+  //             <td data-label="Hành động">
+  //               <button class="btn small">Sửa</button>
+  //               <button class="btn small danger">Xóa</button>
+  //             </td>
+  //           `;
+  //           tbody.appendChild(row);
+  //         });
+  //       } else {
+  //         const emptyRow = document.createElement('tr');
+  //         emptyRow.innerHTML = '<td colspan="6" style="text-align:center; padding:20px; color:#999;">Không tìm thấy danh mục nào 😢</td>';
+  //         tbody.appendChild(emptyRow);
+  //       }
+  //     } catch (error) {
+  //       console.error('Search error:', error);
+  //       alert('❌ Lỗi tìm kiếm: ' + error.message);
+  //     }
+  //   };
+
+  //   // Sự kiện: Click nút tìm kiếm
+  //   searchBtn.addEventListener('click', performSearch);
+
+  //   // Sự kiện: Nhấn Enter trong input
+  //   searchInput.addEventListener('keypress', (e) => {
+  //     if (e.key === 'Enter') {
+  //       performSearch();
+  //     }
+  //   });
+  // }
 });
