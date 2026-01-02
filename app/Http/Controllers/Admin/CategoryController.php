@@ -3,106 +3,93 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Traits\ApiResponseTrait;
 use App\Models\Category;
 use App\Services\CategoryService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    private CategoryService $categoryService;
+    use ApiResponseTrait;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(private CategoryService $categoryService)
     {
-        $this->categoryService = $categoryService;
     }
 
+    /**
+     * Display all categories
+     */
     public function index()
     {
-        // Hiển thị danh sách danh mục
         $categories = $this->categoryService->getAll();
         return view('admin.categories.index', compact('categories'));
     }
 
+    /**
+     * Show create form
+     */
     public function create()
     {
-        // Hiển thị form tạo danh mục mới
         return view('admin.categories.create');
     }
 
-    public function store(Request $request)
+    /**
+     * Store new category
+     */
+    public function store(StoreCategoryRequest $request): JsonResponse
     {
-        // Xử lý lưu danh mục mới
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
         try {
-            $this->categoryService->create($validated);
-            return response()->json([
-                'message' => 'Category created successfully',
-                'status' => true
-            ], 201);
+            $this->categoryService->create($request->validated());
+            return $this->successResponse('Danh mục đã được thêm thành công', null, 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error creating category: ' . $e->getMessage(),
-                'status' => false
-            ], 500);
+            return $this->errorResponse('Lỗi khi thêm danh mục: ' . $e->getMessage(), 500);
         }
     }
 
+    /**
+     * Show edit form
+     */
     public function edit($id)
     {
-        // Hiển thị form chỉnh sửa danh mục
         return view('admin.categories.edit', compact('id'));
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Update category
+     */
+    public function update(UpdateCategoryRequest $request, $id): JsonResponse
     {
-        // Xử lý cập nhật danh mục
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'version' => 'required|integer',
-        ]);
-
         try {
             $category = Category::findOrFail($id);
-            $this->categoryService->update($category, $validated);
-
-            return response()->json([
-                'message' => 'Category updated successfully',
-                'status' => true
-            ], 200);
+            $this->categoryService->update($category, $request->validated());
+            return $this->successResponse('Category updated successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error updating category: ' . $e->getMessage(),
-                'status' => false
-            ], 500);
+            return $this->errorResponse('Error updating category: ' . $e->getMessage(), 500);
         }
     }
 
-    public function destroy($id)
+    /**
+     * Delete category
+     */
+    public function destroy($id): JsonResponse
     {
-        // Xử lý xóa danh mục
         try {
             $category = Category::findOrFail($id);
             $this->categoryService->delete($category);
-            return response()->json([
-                'message' => 'Category deleted successfully',
-                'status' => true
-            ], 200);
+            return $this->successResponse('Category deleted successfully');
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error deleting category: ' . $e->getMessage(),
-                'status' => false
-            ], 500);
+            return $this->errorResponse('Error deleting category: ' . $e->getMessage(), 500);
         }
     }
 
+    /**
+     * Search categories
+     */
     public function search(Request $request)
     {
-        // Tìm kiếm danh mục
         try {
             $query = $request->get('q', '');
 
@@ -111,7 +98,6 @@ class CategoryController extends Controller
             }
 
             $categories = $this->categoryService->search($query);
-
             return view('admin.categories.index', compact('categories'));
         } catch (\Exception $e) {
             return redirect()->route('admin.categories.index')
@@ -119,10 +105,29 @@ class CategoryController extends Controller
         }
     }
 
+    /**
+     * Display category details
+     */
     public function show($id)
     {
-        // Hiển thị chi tiết danh mục
         $category = Category::withCount('posts')->findOrFail($id);
         return view('admin.categories.show', compact('category'));
+    }
+
+    /**
+     * Get category version (for Optimistic Locking)
+     */
+    public function getVersion($id): JsonResponse
+    {
+        try {
+            $category = Category::findOrFail($id);
+            return $this->successResponse('Version fetched', [
+                'version' => $category->version,
+                'name' => $category->name,
+                'description' => $category->description
+            ]);
+        } catch (\Exception $e) {
+            return $this->errorResponse('Error fetching category: ' . $e->getMessage(), 404);
+        }
     }
 }

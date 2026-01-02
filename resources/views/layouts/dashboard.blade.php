@@ -26,12 +26,16 @@
     </main>
   </section>
   
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
   <script src="{{ asset('js/style.js') }}"></script>
   {{-- thêm scripts riêng cho từng trang --}}
   @stack('scripts')
   <script>
-      axios.defaults.headers.common['X-CSRF-TOKEN'] =
-            document.querySelector('meta[name="csrf-token"]').content;
+      // Only initialize axios if available
+      if (typeof axios !== 'undefined') {
+          axios.defaults.headers.common['X-CSRF-TOKEN'] =
+                document.querySelector('meta[name="csrf-token"]').content;
+      }
   </script>
 </body>
 </html>
