@@ -27,6 +27,7 @@ Route::prefix('admin')
         })->name('index');
 
         Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
+        Route::get('/categories/{category}/version', [CategoryController::class, 'getVersion'])->name('categories.getVersion');
         Route::resource('categories', CategoryController::class);
         Route::resource('posts', PostController::class);
         Route::resource('users', UserController::class);

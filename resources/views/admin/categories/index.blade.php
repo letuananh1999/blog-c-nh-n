@@ -43,21 +43,6 @@
             <p class="muted">{{$category->description}}</p>
           </article>
           @endforeach
-          {{-- <article class="cat-card card" data-id="2">
-            <div class="card-top">
-              <h3 class="card-title">Development</h3>
-              <span class="badge">8</span>
-            </div>
-            <p class="muted">Mẹo lập trình, pattern và best practices.</p>
-          </article>
-
-          <article class="cat-card card" data-id="3">
-            <div class="card-top">
-              <h3 class="card-title">Marketing</h3>
-              <span class="badge">5</span>
-            </div>
-            <p class="muted">Chiến lược nội dung và SEO.</p>
-          </article> --}}
         </section>
 
         <div class="card table-card">
@@ -97,15 +82,12 @@
       </div>
 
 
-
       <!-- modal + toast roots for cate interactions -->
-		<div id="modal-root"></div>
-		<div id="toast-root"></div>
-
-		<!-- modal + toast roots for cate interactions -->
-		<div id="modal-root"></div>
-		<div id="toast-root"></div>
+      <div id="modal-root"></div>
+      <div id="toast-root"></div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/category/category.js') }}"></script>
+    {{-- <script src="{{ asset('js/category/category.js') }}"></script> --}}
+    <!-- ✅ Mới - Dùng type="module" để enable import/export -->
+    <script type="module" src="{{ asset('js/category/category-new.js') }}"></script>
 @endpush

@@ -23,6 +23,7 @@ class CategoryFactory extends Factory
             'slug' => Str::slug($name),
             'description' => $this->faker->sentence(),
             'sort' => $this->faker->numberBetween(1, 100),
+            'version' => 0,  // ← Thêm version mặc định
         ];
     }
 }
