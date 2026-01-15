@@ -23,8 +23,9 @@ class UserController extends Controller
     {
         $status = $request->query('status', 'all');
         $users = $this->userService->getUsers($status, 10);
+        $stat = $this->userService->getStats_user();
 
-        return view('admin.user.index', compact('users'));
+        return view('admin.user.index', compact('users', 'stat'));
     }
 
     /**
@@ -145,6 +146,30 @@ class UserController extends Controller
                 ->with('success', 'User xóa thành công');
         } catch (\Exception $e) {
             return back()->with('error', 'Lỗi: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Search users by name or email
+     */
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->get('q', '');
+            $status = $request->get('status', 'all');
+
+            // Validate search query
+            if (strlen($query) < 1) {
+                return redirect()->route('admin.users.index');
+            }
+
+            // Search users
+            $users = $this->userService->search($query, $status);
+
+            return view('admin.user.index', compact('users'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Lỗi tìm kiếm: ' . $e->getMessage());
         }
     }
 }

@@ -14,8 +14,14 @@
                 </p>
             </div>
             <div class="controls">
-                  <div class="control-search"><i class='bx bx-search'></i><input placeholder="Tìm theo tên hoặc email"/></div>
-                  <select class="filter-select"><option>All</option><option>Active</option><option>Blocked</option></select>
+                  {{-- <div class="control-search"><i class='bx bx-search'></i><input placeholder="Tìm theo tên hoặc email"/></div> --}}
+                  <form method="GET" action="{{ route('admin.users.search') }}">
+                    <div class="control-search">
+                      <i class='bx bx-search'></i>
+                      <input type="text" name="q" placeholder="Tìm theo tên hoặc email" value="{{ request('q') }}"/>
+                    </div>
+                  </form>
+                  {{-- <select class="filter-select"><option>All</option><option>Active</option><option>Blocked</option></select> --}}
                   <a href="{{ route('admin.users.create') }}">
                     <button class="btn">Thêm người dùng</button>
                   </a>
@@ -23,9 +29,9 @@
         </div>
 
           <div class="stats-grid">
-            <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">Tổng người dùng</div></div>
-            <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">Hoạt động</div></div>
-            <div class="stat-card"><div class="stat-num">2</div><div class="stat-label">Bị khoá</div></div>
+            <div class="stat-card"><div class="stat-num">{{ $stat['total'] }}</div><div class="stat-label">Tổng người dùng</div></div>
+            <div class="stat-card"><div class="stat-num">{{ $stat['approved'] }}</div><div class="stat-label">Hoạt động</div></div>
+            <div class="stat-card"><div class="stat-num">{{ $stat['pending'] }}</div><div class="stat-label">Bị khoá</div></div>
           </div>
 
           <div class="cards-grid">

@@ -168,8 +168,15 @@ class PostService
 
     // Handle published_at based on status
     if ($data['status'] === 'published') {
-      $postData['published_at'] = $existingPost?->published_at ?? now();
+      // Nếu là tạo mới hoặc status thay đổi từ draft → published → set published_at = now()
+      if (!$existingPost || $existingPost->status !== 'published') {
+        $postData['published_at'] = now();
+      } else {
+        // Nếu đã published rồi, giữ nguyên thời gian publish cũ
+        $postData['published_at'] = $existingPost->published_at;
+      }
     } else {
+      // Nếu status = draft → set published_at = null
       $postData['published_at'] = null;
     }
 

@@ -210,4 +210,43 @@ class UserService
     }
     return asset('img/default-avatar.png');
   }
+
+  /**
+   * Search users by name or email
+   */
+  public function search(string $query, string $status = 'all', int $perPage = 10)
+  {
+    try {
+      if (strlen($query) < 1) {
+        throw new \Exception('Từ khóa tìm kiếm không được để trống!');
+      }
+
+      $queryBuilder = User::where(function ($q) use ($query) {
+        $q->where('name', 'like', "%{$query}%")
+          ->orWhere('email', 'like', "%{$query}%");
+      });
+
+      // Filter by status
+      if ($status !== 'all') {
+        $queryBuilder->where('status', $status);
+      }
+
+      return $queryBuilder->orderBy('created_at', 'desc')
+        ->paginate($perPage);
+    } catch (\Exception $e) {
+      throw new \Exception('Search failed: ' . $e->getMessage());
+    }
+  }
+
+  /**
+   * Lấy thống kê user
+   */
+  public function getStats_user(): array
+  {
+    return [
+      'total' => User::count(),
+      'approved' => User::where('status', 'active')->count(),
+      'pending' => User::where('status', 'blocked')->count(),
+    ];
+  }
 }
