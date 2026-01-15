@@ -19,13 +19,14 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         // Kiểm tra đăng nhập
-        $remember = $request->filled('remember'); // Lấy giá trị checkbox "Remember Me"
+        // 🔧 Remember for 7 days instead of 60 days
+        $rememberFor7Days = $request->filled('remember') ? 7 * 24 * 60 : false;
 
         if (Auth::attempt([
             'email' => $request->email,
             'password' => $request->password,
             'role' => 'Admin' // chỉ cho admin đăng nhập vào trang này
-        ], $remember)) {
+        ], $rememberFor7Days)) {
             $request->session()->regenerate();
             return redirect()->route('admin.index');
         }

@@ -22,26 +22,26 @@
 												<option value="approved" {{ request('status') === 'approved' ? 'selected' : '' }}>Đã duyệt</option>
 												<option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Chờ duyệt</option>
 											</select>
-											<div class="btn-group">
+											{{-- <div class="btn-group">
 												<button type="submit" class="btn">Lọc</button>
-											</div>
+											</div> --}}
 										</form>
 									</div>
 								</div>
 
 								<div class="stats-grid">
 									<span class="stat-card">
-                    <h3 class="stat-num">{{ $stats['total'] }}</h3>
-                    <p class="stat-label">Tổng bình luận</p>
-                  </span>
+										<h3 class="stat-num">{{ $stats['total'] }}</h3>
+										<p class="stat-label">Tổng bình luận</p>
+									</span>
 									<span class="stat-card">
-                    <h3 class="stat-num">{{ $stats['approved'] }}</h3>
-                    <p class="stat-label">Đã duyệt</p>
-                  </span>
+										<h3 class="stat-num">{{ $stats['approved'] }}</h3>
+										<p class="stat-label">Đã duyệt</p>
+									</span>
 									<span class="stat-card">
-                    <h3 class="stat-num">{{ $stats['pending'] }}</h3>
-                    <p class="stat-label">Chờ duyệt</p>
-                  </span>
+										<h3 class="stat-num">{{ $stats['pending'] }}</h3>
+										<p class="stat-label">Chờ duyệt</p>
+									</span>
 								</div>
 
 								@include('components.flash_message')
@@ -53,15 +53,15 @@
 										<div class="comment-body">
 											<div class="comment-meta">
 												<strong>{{ $comment->author_name }}</strong>
-                        <span>•</span>
-                        <span>Bài: <a href="{{ route('admin.posts.show', $comment->post_id) }}" target="_blank">{{ Str::limit($comment->post->title, 15) }}</a></span>
-                        <span>•</span>
-                        <span>{{ $comment->created_at->format('Y-m-d H:i') }}</span>
-                        <span>•</span>
-                        <span class="status-badge {{ $comment->is_approved ? 'approved' : 'pending' }}">
-                          {{ $comment->is_approved ? '✓ Đã duyệt' : '⏳ Chờ duyệt' }}
-                        </span>
-                      </div>
+												<span>•</span>
+												<span>Bài: <a href="{{ route('admin.posts.show', $comment->post_id) }}" target="_blank">{{ Str::limit($comment->post->title, 15) }}</a></span>
+												<span>•</span>
+												<span>{{ $comment->created_at->format('Y-m-d H:i') }}</span>
+												<span>•</span>
+												<span class="status-badge {{ $comment->is_approved ? 'approved' : 'pending' }}">
+												{{ $comment->is_approved ? '✓ Đã duyệt' : '⏳ Chờ duyệt' }}
+												</span>
+											</div>
 
 											{{-- Nếu là comment trả lời --}}
 											@if($comment->parent_id)

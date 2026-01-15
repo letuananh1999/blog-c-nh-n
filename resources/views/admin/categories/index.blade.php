@@ -38,7 +38,8 @@
           <article class="cat-card card" data-id="{{ $category->id }}">
             <div class="card-top">
               <h3 class="card-title">{{$category->name}}</h3>
-              <span class="badge">{{$category->sort}}</span>
+              {{-- <span class="badge">{{$category->sort}}</span> --}}
+              <span class="badge">{{ $category->posts_count }}</span>
             </div>
             <p class="muted">{{$category->description}}</p>
           </article>

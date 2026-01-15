@@ -63,15 +63,21 @@
 							</tr>
 						</thead>
 						<tbody>
+							@forelse ($users as $user)
 							<tr>
 								<td>
-									<img src="img/people.png">
-									<p>John Doe</p>
+									<img src="{{ $user->avatar ? asset('img/user/' . $user->avatar) : asset('img/people.png') }}">
+									<p>{{ $user->name[0] }}</p>
 								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
+								<td>{{$user->created_at->format('Y-m-d')}}</td>
+								<td><span class="status {{ $user->status }}">{{$user->status}}</span></td>
 							</tr>
-							<tr>
+							@empty
+							 <tr>
+								<td colspan="3" style="text-align: center;">Không có user</td>
+							</tr>
+							@endforelse
+													{{-- <tr>
 								<td>
 									<img src="img/people.png">
 									<p>John Doe</p>
@@ -102,7 +108,7 @@
 								</td>
 								<td>01-10-2021</td>
 								<td><span class="status completed">Completed</span></td>
-							</tr>
+							</tr> --}}
 						</tbody>
 					</table>
 				</div>

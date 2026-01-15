@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
-  <link rel="stylesheet" href="{{asset('css/style.css')}}">
+  <link rel="stylesheet" href="{{asset('css/app.css')}}">
   <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
   <link rel="stylesheet" href="{{ asset('css/dashboard-main.css') }}">
   {{-- thêm styles riêng cho từng trang --}}
@@ -27,7 +27,7 @@
   </section>
   
   <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-  <script src="{{ asset('js/style.js') }}"></script>
+  <script src="{{ asset('js/app.js') }}"></script>
   {{-- thêm scripts riêng cho từng trang --}}
   @stack('scripts')
   <script>

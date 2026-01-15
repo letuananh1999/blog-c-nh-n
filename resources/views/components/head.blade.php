@@ -15,7 +15,7 @@
 				<span class="num">8</span>
 			</a>
 			<a href="#" class="profile">
-				<img src="{{ asset('img/people.png') }}">
+				<img src="{{ auth()->user()->avatar ? asset('img/user/' . auth()->user()->avatar) : asset('img/people.png') }}">
 			</a>
 		</nav>
 		<!-- NAVBAR -->

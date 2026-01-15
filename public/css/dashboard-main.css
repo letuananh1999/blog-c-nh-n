@@ -176,6 +176,12 @@
 #content main .table-data .order table tr td .status.pending {
 	background: var(--orange);
 }
+#content main .table-data .order table tr td .status.active {
+	background: var(--blue);
+}
+#content main .table-data .order table tr td .status.blocked {
+	background: var(--orange);
+}
 
 
 #content main .table-data .todo {

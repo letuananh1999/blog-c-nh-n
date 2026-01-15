@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CommentController;
-
+use App\Http\Controllers\Admin\HomeControllers;
 // Root route - redirect tới login
 Route::redirect('/', '/admin/login');
 
@@ -22,14 +22,13 @@ Route::prefix('admin')
     // 👉 Các route chỉ cho admin sau khi đăng nhập + có quyền admin
     Route::middleware(['auth', 'checkrole:admin'])
       ->group(function () {
-        Route::get('/', function () {
-          return view('admin.index');
-        })->name('index');
+        Route::get('/', [HomeControllers::class, 'index'])->name('index');
 
         Route::get('/categories/search', [CategoryController::class, 'search'])->name('categories.search');
         Route::get('/categories/{category}/version', [CategoryController::class, 'getVersion'])->name('categories.getVersion');
         Route::resource('categories', CategoryController::class);
         Route::resource('posts', PostController::class);
+        Route::get('/users/search', [UserController::class, 'search'])->name('users.search');
         Route::resource('users', UserController::class);
         Route::patch('/users/{id}/toggle-status', [UserController::class, 'toggleStatus'])
           ->name('users.toggleStatus');

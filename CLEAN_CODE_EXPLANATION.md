@@ -1,4 +1,5 @@
 # 📚 Giải Thích Chi Tiết Clean Code - Category Module
+# JAVASCRIPT - Chi Tiết Từng File (category)
 
 ## 🏗️ Kiến Trúc Tổng Quan
 

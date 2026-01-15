@@ -131,7 +131,8 @@
   border-radius:10px;
   border:1px solid var(--glass);
   background: linear-gradient(90deg, var(--accent), var(--accent2));
-  cursor:pointer
+  cursor:pointer;
+  color:#0a0a0a;
 }
 
 /* table fallback */

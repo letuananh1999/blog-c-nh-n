@@ -1,5 +1,5 @@
 # 📌 GIẢI THÍCH: is_approved & Service Layer
-
+    # 1 trường trong bảng comment( database )
 ## 1️⃣ CỘT is_approved DÙNG LÀM GÌ?
 
 ### Khái Niệm
